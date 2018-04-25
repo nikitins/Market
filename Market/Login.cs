@@ -21,14 +21,27 @@ namespace Market
         private void button1_Click(object sender, EventArgs e)
         {
             bool exists = DataBase.checkUserExists(this.loginTextBox.Text, this.passwordTextBow.Text);
-            MessageBox.Show(
-               exists.ToString(),
-               "Сообщение",
-               MessageBoxButtons.OK,
-               MessageBoxIcon.Information,
-               MessageBoxDefaultButton.Button1,
-               MessageBoxOptions.DefaultDesktopOnly);
-            
+
+            if (exists)
+            {
+                MessageBox.Show(
+                   "Все хорошо!",
+                   "Сообщение",
+                   MessageBoxButtons.OK,
+                   MessageBoxIcon.Information,
+                   MessageBoxDefaultButton.Button1,
+                   MessageBoxOptions.DefaultDesktopOnly);
+            }
+            else
+            {
+                MessageBox.Show(
+                   "Имя пользователя или пароль неверные",
+                   "Ошибка авторизации",
+                   MessageBoxButtons.OK,
+                   MessageBoxIcon.Information,
+                   MessageBoxDefaultButton.Button1,
+                   MessageBoxOptions.DefaultDesktopOnly);
+            }
         }
     }
 }

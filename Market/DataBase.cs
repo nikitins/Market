@@ -20,28 +20,20 @@ namespace Market
 
         static DataBase()
         {
-            using (SQLiteConnection conn = getConnection())
+            runEmpty($"CREATE TABLE IF NOT EXISTS {ACCOUNTS_TABLE_NAME}"
+                   + " (id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                   + "name TEXT NOT NULL, "
+                   + "password_hash TEXT NOT NULL, "
+                   + "isRoot BOOLEAN NOT NULL);");
+
+            if (runScalar($"SELECT count(*) from {ACCOUNTS_TABLE_NAME} WHERE name='root';") == 0)
             {
-                runEmpty($"CREATE TABLE IF NOT EXISTS {ACCOUNTS_TABLE_NAME}"
-                       + " (id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                       + "name TEXT NOT NULL, "
-                       + "password_hash TEXT NOT NULL, "
-                       + "isRoot BOOLEAN NOT NULL);");
-
-                if (runScalar($"SELECT count(*) from {ACCOUNTS_TABLE_NAME} WHERE name='root';") == 0) {
-                    runEmpty($"INSERT INTO {ACCOUNTS_TABLE_NAME} (name, password_hash, isRoot) VALUES('root', '{getHash("root1234")}', 1);");
-                }
-                if (runScalar($"SELECT count(*) from {ACCOUNTS_TABLE_NAME} WHERE name='admin';") == 0)
-                {
-                    runEmpty($"INSERT INTO {ACCOUNTS_TABLE_NAME} (name, password_hash, isRoot) VALUES('admin', '{getHash("admin1234")}', 0);");
-                }
+                runEmpty($"INSERT INTO {ACCOUNTS_TABLE_NAME} (name, password_hash, isRoot) VALUES('root', '{getHash("root1234")}', 1);");
             }
-
-            //DataSet data = new System.Data.DataSet();
-            //data.Reset();
-            //SQLiteDataAdapter ad = new SQLiteDataAdapter(createComand("SELECT * from accounts WHERE name='root';"));
-            //ad.Fill(data);
-
+            if (runScalar($"SELECT count(*) from {ACCOUNTS_TABLE_NAME} WHERE name='admin';") == 0)
+            {
+                runEmpty($"INSERT INTO {ACCOUNTS_TABLE_NAME} (name, password_hash, isRoot) VALUES('admin', '{getHash("admin1234")}', 0);");
+            }
         }
 
        public static bool checkUserExists(String userName, String password)
