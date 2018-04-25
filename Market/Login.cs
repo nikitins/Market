@@ -20,9 +20,15 @@ namespace Market
 
         private void button1_Click(object sender, EventArgs e)
         {
-            DataBase.checkUserExists("123", "23");
-
+            bool exists = DataBase.checkUserExists(this.loginTextBox.Text, this.passwordTextBow.Text);
+            MessageBox.Show(
+               exists.ToString(),
+               "Сообщение",
+               MessageBoxButtons.OK,
+               MessageBoxIcon.Information,
+               MessageBoxDefaultButton.Button1,
+               MessageBoxOptions.DefaultDesktopOnly);
+            
         }
-
     }
 }
