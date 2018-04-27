@@ -30,7 +30,6 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.firstNameTextBox = new System.Windows.Forms.TextBox();
-            this.registrationButton = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
@@ -39,6 +38,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.registerButton = new System.Windows.Forms.Button();
+            this.cancelButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -54,38 +55,28 @@
             // 
             this.firstNameTextBox.Location = new System.Drawing.Point(115, 81);
             this.firstNameTextBox.Name = "firstNameTextBox";
-            this.firstNameTextBox.Size = new System.Drawing.Size(159, 20);
+            this.firstNameTextBox.Size = new System.Drawing.Size(190, 20);
             this.firstNameTextBox.TabIndex = 1;
-            // 
-            // registrationButton
-            // 
-            this.registrationButton.Location = new System.Drawing.Point(140, 328);
-            this.registrationButton.Name = "registrationButton";
-            this.registrationButton.Size = new System.Drawing.Size(75, 23);
-            this.registrationButton.TabIndex = 2;
-            this.registrationButton.Text = "button1";
-            this.registrationButton.UseVisualStyleBackColor = true;
-            this.registrationButton.Click += new System.EventHandler(this.registration_Click);
             // 
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(115, 108);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(159, 20);
+            this.textBox1.Size = new System.Drawing.Size(190, 20);
             this.textBox1.TabIndex = 3;
             // 
             // textBox2
             // 
             this.textBox2.Location = new System.Drawing.Point(115, 135);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(159, 20);
+            this.textBox2.Size = new System.Drawing.Size(190, 20);
             this.textBox2.TabIndex = 4;
             // 
             // textBox3
             // 
             this.textBox3.Location = new System.Drawing.Point(115, 162);
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(159, 20);
+            this.textBox3.Size = new System.Drawing.Size(190, 20);
             this.textBox3.TabIndex = 5;
             // 
             // comboBox1
@@ -93,7 +84,7 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(115, 189);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(159, 21);
+            this.comboBox1.Size = new System.Drawing.Size(190, 21);
             this.comboBox1.TabIndex = 6;
             // 
             // label2
@@ -132,11 +123,33 @@
             this.label5.TabIndex = 10;
             this.label5.Text = "Кто пригласил";
             // 
+            // registerButton
+            // 
+            this.registerButton.Location = new System.Drawing.Point(115, 236);
+            this.registerButton.Name = "registerButton";
+            this.registerButton.Size = new System.Drawing.Size(87, 23);
+            this.registerButton.TabIndex = 11;
+            this.registerButton.Text = "Регистрация";
+            this.registerButton.UseVisualStyleBackColor = true;
+            this.registerButton.Click += new System.EventHandler(this.registerButton_Click);
+            // 
+            // cancelButton
+            // 
+            this.cancelButton.Location = new System.Drawing.Point(230, 236);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.TabIndex = 12;
+            this.cancelButton.Text = "Отмена";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            // 
             // Register
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(380, 440);
+            this.ClientSize = new System.Drawing.Size(351, 331);
+            this.Controls.Add(this.cancelButton);
+            this.Controls.Add(this.registerButton);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -145,7 +158,6 @@
             this.Controls.Add(this.textBox3);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.registrationButton);
             this.Controls.Add(this.firstNameTextBox);
             this.Controls.Add(this.label1);
             this.Name = "Register";
@@ -159,7 +171,6 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox firstNameTextBox;
-        private System.Windows.Forms.Button registrationButton;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox3;
@@ -168,5 +179,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button registerButton;
+        private System.Windows.Forms.Button cancelButton;
     }
 }

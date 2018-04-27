@@ -34,7 +34,7 @@ namespace Market
 
         private void registration_Click(object sender, EventArgs e)
         {
-            new Forms.Register().Show();
+            new Forms.Register(this).Show();
             Hide();
         }
     }
