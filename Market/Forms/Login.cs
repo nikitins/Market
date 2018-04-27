@@ -20,17 +20,14 @@ namespace Market
 
         private void button1_Click(object sender, EventArgs e)
         {
-            bool exists = DataBase.checkUserExists(this.loginTextBox.Text, this.passwordTextBow.Text);
+            String name = this.loginTextBox.Text;
+            String password = this.passwordTextBow.Text;
+            bool exists = DataBase.checkUserExists(name, password);
 
             if (exists)
             {
-                MessageBox.Show(
-                   "Все хорошо!",
-                   "Сообщение",
-                   MessageBoxButtons.OK,
-                   MessageBoxIcon.Information,
-                   MessageBoxDefaultButton.Button1,
-                   MessageBoxOptions.DefaultDesktopOnly);
+                new Main(DataBase.checkIsRoot(name)).Show();
+                this.Hide();
             }
             else
             {
@@ -43,5 +40,6 @@ namespace Market
                    MessageBoxOptions.DefaultDesktopOnly);
             }
         }
+
     }
 }

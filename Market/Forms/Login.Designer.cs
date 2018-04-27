@@ -35,10 +35,10 @@
             this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // button1
+            // logoutButton
             // 
             this.button1.Location = new System.Drawing.Point(154, 191);
-            this.button1.Name = "button1";
+            this.button1.Name = "login";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
             this.button1.Text = "Войти";
@@ -65,8 +65,10 @@
             // 
             this.passwordTextBow.Location = new System.Drawing.Point(142, 153);
             this.passwordTextBow.Name = "passwordTextBow";
+            this.passwordTextBow.PasswordChar = '*';
             this.passwordTextBow.Size = new System.Drawing.Size(100, 20);
             this.passwordTextBow.TabIndex = 3;
+            this.passwordTextBow.WordWrap = false;
             // 
             // label2
             // 
