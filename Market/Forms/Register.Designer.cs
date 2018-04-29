@@ -1,4 +1,6 @@
-﻿namespace Market.Forms
+﻿using System.Windows.Forms;
+
+namespace Market.Forms
 {
     partial class Register
     {
@@ -30,10 +32,10 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.firstNameTextBox = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.lastNameTextBox = new System.Windows.Forms.TextBox();
+            this.seconNameTextBox = new System.Windows.Forms.TextBox();
+            this.phoneTextBox = new System.Windows.Forms.TextBox();
+            this.inviterTextBox = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -58,34 +60,35 @@
             this.firstNameTextBox.Size = new System.Drawing.Size(190, 20);
             this.firstNameTextBox.TabIndex = 1;
             // 
-            // textBox1
+            // lastNameTextBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(115, 108);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(190, 20);
-            this.textBox1.TabIndex = 3;
+            this.lastNameTextBox.Location = new System.Drawing.Point(115, 108);
+            this.lastNameTextBox.Name = "lastNameTextBox";
+            this.lastNameTextBox.Size = new System.Drawing.Size(190, 20);
+            this.lastNameTextBox.TabIndex = 3;
             // 
-            // textBox2
+            // seconNameTextBox
             // 
-            this.textBox2.Location = new System.Drawing.Point(115, 135);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(190, 20);
-            this.textBox2.TabIndex = 4;
+            this.seconNameTextBox.Location = new System.Drawing.Point(115, 135);
+            this.seconNameTextBox.Name = "seconNameTextBox";
+            this.seconNameTextBox.Size = new System.Drawing.Size(190, 20);
+            this.seconNameTextBox.TabIndex = 4;
             // 
-            // textBox3
+            // phoneTextBox
             // 
-            this.textBox3.Location = new System.Drawing.Point(115, 162);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(190, 20);
-            this.textBox3.TabIndex = 5;
+            this.phoneTextBox.Location = new System.Drawing.Point(115, 162);
+            this.phoneTextBox.Name = "phoneTextBox";
+            this.phoneTextBox.Size = new System.Drawing.Size(190, 20);
+            this.phoneTextBox.TabIndex = 5;
             // 
-            // comboBox1
+            // inviterTextBox
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(115, 189);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(190, 21);
-            this.comboBox1.TabIndex = 6;
+            this.inviterTextBox.FormattingEnabled = true;
+            this.inviterTextBox.Location = new System.Drawing.Point(115, 189);
+            this.inviterTextBox.Name = "comboBox1";
+            this.inviterTextBox.Size = new System.Drawing.Size(190, 21);
+            this.inviterTextBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            this.inviterTextBox.TabIndex = 6;
             // 
             // label2
             // 
@@ -154,10 +157,10 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.inviterTextBox);
+            this.Controls.Add(this.phoneTextBox);
+            this.Controls.Add(this.seconNameTextBox);
+            this.Controls.Add(this.lastNameTextBox);
             this.Controls.Add(this.firstNameTextBox);
             this.Controls.Add(this.label1);
             this.Name = "Register";
@@ -171,10 +174,10 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox firstNameTextBox;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.TextBox lastNameTextBox;
+        private System.Windows.Forms.TextBox seconNameTextBox;
+        private System.Windows.Forms.TextBox phoneTextBox;
+        private System.Windows.Forms.ComboBox inviterTextBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;

@@ -6,16 +6,16 @@ namespace Market.Models
     class User
     {
 
-        private int id { get; set; }
-        private string firstName { get; set; }
-        private string lastName { get; set; }
-        private string secondName { get; set; }
-        private string phone { get; set; }
-        private int parentId { get; set; }
-        private int bonus { get; set; }
-        private bool agent { get; set; }
-        private User parent { get; set; }
-        private List<User> children { get; set; }
+        public int id { get; set; }
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public string secondName { get; set; }
+        public string phone { get; set; }
+        public int parentId { get; set; }
+        public int bonus { get; set; }
+        public int type { get; set; }
+        public User parent { get; set; }
+        public List<User> children { get; set; }
 
         public void addChild(User child)
         {
@@ -23,7 +23,7 @@ namespace Market.Models
         }
 
 
-        public User(int id, string firstName, string lastName, string secondName, string phone, int parentId, int bonus, bool agent)
+        public User(int id, string firstName, string lastName, string secondName, string phone, int parentId, int bonus, int type)
         {
             this.id = id;
             this.firstName = firstName;
@@ -32,7 +32,7 @@ namespace Market.Models
             this.phone = phone;
             this.parentId = parentId;
             this.bonus = bonus;
-            this.agent = agent;
+            this.type = type;
         }
     }
 }

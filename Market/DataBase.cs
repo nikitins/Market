@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Market.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
@@ -27,7 +28,9 @@ namespace Market
                    + "password_hash TEXT NOT NULL, "
                    + "isRoot BOOLEAN NOT NULL);");
 
-            runEmpty($"CREATE TABLE IF NOT EXISTS {ACCOUNTS_TABLE_NAME}"
+            runEmpty($"DROP TABLE IF EXISTS {USERS_TABLE_NAME};");
+
+            runEmpty($"CREATE TABLE IF NOT EXISTS {USERS_TABLE_NAME}"
                    + " (id INTEGER PRIMARY KEY AUTOINCREMENT, "
                    + "firstName TEXT NOT NULL, "
                    + "lastName TEXT NOT NULL, "
@@ -35,8 +38,16 @@ namespace Market
                    + "phone TEXT NOT NULL, "
                    + "parentId INTEGER NOT NULL, "
                    + "bonus INTEGER NOT NULL, "
-                   + "isAgent BOOLEAN NOT NULL);");
+                   + "type INTEGER NOT NULL);"); //0 - user, 1 - agent
 
+            if (getUserCountByPhone("123") == 0)
+            {
+                createUser("user1", "user11", "user111", "123", 0, 0, 0);
+            }
+            if (getUserCountByPhone("456") == 0)
+            {
+                createUser("user2", "user22", "user222", "456", 0, 0, 0);
+            }
 
 
             if (runScalar($"SELECT count(*) from {ACCOUNTS_TABLE_NAME} WHERE name='root';") == 0)
@@ -73,12 +84,14 @@ namespace Market
                 SQLiteCommand cmd = createComand(text, conn);
                 try
                 {
-                    SQLiteDataReader reader = cmd.ExecuteReader();
-                    if (reader.HasRows)
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
                     {
-                        while (reader.Read())
+                        if (reader.HasRows)
                         {
-                            return reader.GetBoolean(0);
+                            while (reader.Read())
+                            {
+                                return reader.GetBoolean(0);
+                            }
                         }
                     }
                 }
@@ -88,6 +101,47 @@ namespace Market
                 }
             }
             return false;
+        }
+
+        public static List<User> getAllUsers()
+        {
+            List<User> users = new List<User>();
+            String text = $"SELECT id, firstName, lastName, secondName, phone, parentId, bonus, type from {USERS_TABLE_NAME};";
+            using (SQLiteConnection conn = getConnection())
+            {
+                conn.Open();
+                SQLiteCommand cmd = createComand(text, conn);
+                try
+                {
+                    using (SQLiteDataReader reader = cmd.ExecuteReader()) {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                User user = new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4),
+                                    reader.GetInt32(5), reader.GetInt32(6), reader.GetInt32(7));
+                                users.Add(user);
+                            }
+                        }
+                    }
+                }
+                catch (SQLiteException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return users;
+        } 
+
+        public static void createUser(string firstName, string lastName, string secondName, string phone, int parentId, int bonus, int type)
+        {
+            runEmpty($"INSERT INTO {USERS_TABLE_NAME} (firstName, lastName, secondName, phone, parentId, bonus, type) " +
+                $"VALUES ('{firstName}', '{lastName}', '{secondName}', '{phone}', {parentId}, {bonus}, {type});");
+        }
+
+        public static long getUserCountByPhone(string phone)
+        {
+            return runScalar($"SELECT COUNT(*) FROM {USERS_TABLE_NAME} WHERE phone='{phone}';");
         }
 
         private static void runEmpty(String text)
@@ -125,25 +179,6 @@ namespace Market
                 }
             }
             return -1;
-        }
-        
-        private static SQLiteDataReader runReader(String text)
-        {
-            using (SQLiteConnection conn = getConnection())
-            {
-                conn.Open();
-                SQLiteCommand cmd = createComand(text, conn);
-                try
-                {
-                    SQLiteDataReader reader = cmd.ExecuteReader();
-                    return reader;
-                }
-                catch (SQLiteException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-            return null;
         }
 
         private static SQLiteCommand createComand(String text, SQLiteConnection conn)
