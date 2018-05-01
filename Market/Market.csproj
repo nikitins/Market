@@ -97,7 +97,10 @@
     <Compile Include="Forms\Register.Designer.cs">
       <DependentUpon>Register.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\SaleDB.cs" />
+    <Compile Include="Models\Tree.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserDB.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\Login.resx">

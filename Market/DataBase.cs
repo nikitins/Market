@@ -14,6 +14,7 @@ namespace Market
         private const string DATABASE_NAME = "filename.db";
         private const string ACCOUNTS_TABLE_NAME = "accounts"; 
         private const string USERS_TABLE_NAME = "users"; 
+        private const string SALES_TABLE_NAME = "sales"; 
 
         static SQLiteConnection getConnection()
         {
@@ -22,16 +23,16 @@ namespace Market
 
         static DataBase()
         {
-            runEmpty($"CREATE TABLE IF NOT EXISTS {ACCOUNTS_TABLE_NAME}"
-                   + " (id INTEGER PRIMARY KEY AUTOINCREMENT, "
+            runEmpty($"CREATE TABLE IF NOT EXISTS {ACCOUNTS_TABLE_NAME} "
+                   + "(id INTEGER PRIMARY KEY AUTOINCREMENT, "
                    + "name TEXT NOT NULL, "
                    + "password_hash TEXT NOT NULL, "
                    + "isRoot BOOLEAN NOT NULL);");
 
             runEmpty($"DROP TABLE IF EXISTS {USERS_TABLE_NAME};");
 
-            runEmpty($"CREATE TABLE IF NOT EXISTS {USERS_TABLE_NAME}"
-                   + " (id INTEGER PRIMARY KEY AUTOINCREMENT, "
+            runEmpty($"CREATE TABLE IF NOT EXISTS {USERS_TABLE_NAME} "
+                   + "(id INTEGER PRIMARY KEY AUTOINCREMENT, "
                    + "firstName TEXT NOT NULL, "
                    + "lastName TEXT NOT NULL, "
                    + "secondName TEXT, "
@@ -39,6 +40,13 @@ namespace Market
                    + "parentId INTEGER NOT NULL, "
                    + "bonus INTEGER NOT NULL, "
                    + "type INTEGER NOT NULL);"); //0 - user, 1 - agent
+
+            runEmpty($"CREATE TABLE IF NOT EXISTS {SALES_TABLE_NAME} " +
+                      "(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                      $"FOREIGN KEY (user_id) REFERENCES {USERS_TABLE_NAME}(id), " +
+                      "sum INT NOT NULL, " +
+                      "payed_bonus INT NOT NULL, " +
+                      "date DATETIME NOT NULL);");
 
             if (getUserCountByPhone("123") == 0)
             {
@@ -103,9 +111,9 @@ namespace Market
             return false;
         }
 
-        public static List<User> getAllUsers()
+        public static List<UserDB> getAllUsers()
         {
-            List<User> users = new List<User>();
+            List<UserDB> users = new List<UserDB>();
             String text = $"SELECT id, firstName, lastName, secondName, phone, parentId, bonus, type from {USERS_TABLE_NAME};";
             using (SQLiteConnection conn = getConnection())
             {
@@ -118,7 +126,7 @@ namespace Market
                         {
                             while (reader.Read())
                             {
-                                User user = new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4),
+                                UserDB user = new UserDB(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4),
                                     reader.GetInt32(5), reader.GetInt32(6), reader.GetInt32(7));
                                 users.Add(user);
                             }

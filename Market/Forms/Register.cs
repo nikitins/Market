@@ -14,7 +14,7 @@ namespace Market.Forms
     public partial class Register : Form
     {
         Form mainForm;
-        List<User> users;
+        List<UserDB> users;
 
         public Register(Form mainForm)
         {
@@ -59,11 +59,11 @@ namespace Market.Forms
                 return;
             }
 
-            if (phone.Length != 11 || !phone.StartsWith("89"))
-            {
-                MessageBox.Show("Номер телефона должен быть указан в формате '89123456789'");
-                return;
-            }
+    //        if (phone.Length != 11 || !phone.StartsWith("89"))
+    //        {
+    //            MessageBox.Show("Номер телефона должен быть указан в формате '89123456789'");
+    //            return;
+    //        }
 
             if (DataBase.getUserCountByPhone(phone) > 0)
             {
@@ -76,6 +76,7 @@ namespace Market.Forms
             {
                 parantId = users[inviterTextBox.SelectedIndex].id;
             }
+
             DataBase.createUser(firstName, lastName, secondName, phone, parantId, 0, 0);
 
             MessageBox.Show($"Пользователь {phone} - {firstName} {lastName} зарегистрирован");

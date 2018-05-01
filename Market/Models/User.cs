@@ -1,38 +1,38 @@
-﻿using System.Collections.Generic;
-
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Market.Models
 {
     class User
     {
+        public int id;
+        public string firstName;
+        public string lastName;
+        public string secondName;
+        public string phone;
+        public User parent;
+        public List<User> children = new List<User>();
+        public int bonus;
+        public int type;
 
-        public int id { get; set; }
-        public string firstName { get; set; }
-        public string lastName { get; set; }
-        public string secondName { get; set; }
-        public string phone { get; set; }
-        public int parentId { get; set; }
-        public int bonus { get; set; }
-        public int type { get; set; }
-        public User parent { get; set; }
-        public List<User> children { get; set; }
+        public User(UserDB userDB, User parent)
+        {
+            id = userDB.id;
+            firstName = userDB.firstName;
+            lastName = userDB.lastName;
+            secondName = userDB.secondName;
+            phone = userDB.phone;
+            bonus = userDB.bonus;
+            type = userDB.type;
+            this.parent = parent;
+        }
 
         public void addChild(User child)
         {
             children.Add(child);
-        }
-
-
-        public User(int id, string firstName, string lastName, string secondName, string phone, int parentId, int bonus, int type)
-        {
-            this.id = id;
-            this.firstName = firstName;
-            this.lastName = lastName;
-            this.secondName = secondName;
-            this.phone = phone;
-            this.parentId = parentId;
-            this.bonus = bonus;
-            this.type = type;
         }
     }
 }
