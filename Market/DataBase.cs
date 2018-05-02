@@ -43,18 +43,19 @@ namespace Market
 
             runEmpty($"CREATE TABLE IF NOT EXISTS {SALES_TABLE_NAME} " +
                       "(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                      $"FOREIGN KEY (user_id) REFERENCES {USERS_TABLE_NAME}(id), " +
+                      "user_id INTEGER, " +
                       "sum INT NOT NULL, " +
                       "payed_bonus INT NOT NULL, " +
-                      "date DATETIME NOT NULL);");
+                      "date DATETIME NOT NULL, " +
+                      $"FOREIGN KEY (user_id) REFERENCES {USERS_TABLE_NAME}(id));");
 
             if (getUserCountByPhone("123") == 0)
             {
-                createUser("user1", "user11", "user111", "123", 0, 0, 0);
+                createUser("Вася", "Пупкин", "Валерьевич", "89271169536", -1, 0, 0);
             }
             if (getUserCountByPhone("456") == 0)
             {
-                createUser("user2", "user22", "user222", "456", 0, 0, 0);
+                createUser("Маша", "Старожилова", "Иванова", "89374368945", 1, 0, 0);
             }
 
 
@@ -76,16 +77,26 @@ namespace Market
             }
         }
 
-       public static bool checkUserExists(String userName, String password)
+       public static bool checkAccountPassword(String userName, String password)
         {
             String text = $"SELECT count(*) from {ACCOUNTS_TABLE_NAME} WHERE name='{userName}' AND password_hash='{getHash(password)}';";
             long count = runScalar(text);
             return count > 0;
         }
 
-        public static bool checkIsRoot(String userName)
+        public static void changeAccountPassword(String name, String oldPassword, String newPassword)
         {
-            String text = $"SELECT isRoot from {ACCOUNTS_TABLE_NAME} WHERE name='{userName}';";
+            runEmpty($"UPDATE {ACCOUNTS_TABLE_NAME} SET password_hash='{getHash(newPassword)}' WHERE name='{name}' AND password_hash='{getHash(oldPassword)}';");
+        }
+
+        public static void changeUserType(String phone, int type)
+        {
+            runEmpty($"UPDATE {USERS_TABLE_NAME} SET type='{type}' WHERE phone='{phone}';");
+        }
+
+        public static Account getAccount(String userName)
+        {
+            String text = $"SELECT id, name, isRoot from {ACCOUNTS_TABLE_NAME} WHERE name='{userName}';";
             using (SQLiteConnection conn = getConnection())
             {
                 conn.Open();
@@ -98,7 +109,7 @@ namespace Market
                         {
                             while (reader.Read())
                             {
-                                return reader.GetBoolean(0);
+                                return new Account(reader.GetInt32(0), reader.GetString(1), reader.GetBoolean(2));
                             }
                         }
                     }
@@ -108,7 +119,7 @@ namespace Market
                     Console.WriteLine(ex.Message);
                 }
             }
-            return false;
+            return null;
         }
 
         public static List<UserDB> getAllUsers()

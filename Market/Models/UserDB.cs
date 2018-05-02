@@ -25,5 +25,10 @@ namespace Market.Models
             this.bonus = bonus;
             this.type = type;
         }
+
+        public override string ToString()
+        {
+            return $"{firstName} {lastName} - {phone[0]}-{phone.Substring(1, 3)}-{phone.Substring(4, 3)}-{phone.Substring(7, 2)}-{phone.Substring(9, 2)}";
+        }
     }
 }

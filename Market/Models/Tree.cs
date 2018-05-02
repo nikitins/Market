@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace Market.Models
 {
     class Tree
     {
+        User root;
         Dictionary<int, User> tree = new Dictionary<int, User>();
 
         public Tree(List<UserDB> users)
@@ -17,6 +20,28 @@ namespace Market.Models
             foreach (UserDB user in users) {
                 addUser(user, usersMap);
             }
+        }
+
+        public TreeNode toTreeNode()
+        {
+            return toTreeNode(root);
+        }
+
+        private TreeNode toTreeNode(User user)
+        {
+            TreeNode[] children = new TreeNode[user.children.Count];
+
+            for (int i = 0; i < user.children.Count; i++)
+            {
+                children[i] = toTreeNode(user.children[i]);
+            }
+
+            TreeNode node = new TreeNode(user.ToString(), children);
+            if (user.type == 1)
+            {
+                node.NodeFont = new Font(new TreeView().Font, FontStyle.Bold);
+            }
+            return node;
         }
 
         private User addUser(UserDB userDB, Dictionary<int, UserDB> users)
@@ -36,6 +61,9 @@ namespace Market.Models
             if(parent != null)
             {
                 parent.addChild(user);
+            } else
+            {
+                root = user;
             }
 
             tree.Add(user.id, user);

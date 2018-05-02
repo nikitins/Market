@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Market.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,24 +21,25 @@ namespace Market
 
         private void button1_Click(object sender, EventArgs e)
         {
-            String name = this.loginTextBox.Text;
-            String password = this.passwordTextBow.Text;
-            bool exists = DataBase.checkUserExists(name, password);
+            String name = loginTextBox.Text;
+            String password = passwordTextBow.Text;
+            bool exists = DataBase.checkAccountPassword(name, password);
 
             if (exists)
             {
-                new Main(DataBase.checkIsRoot(name)).Show();
-                this.Hide();
+                Account account = DataBase.getAccount(name);
+                new Main(account).Show();
+                Hide();
             }
             else
             {
                 MessageBox.Show(
                    "Имя пользователя или пароль неверные",
-                   "Ошибка авторизации",
-                   MessageBoxButtons.OK,
-                   MessageBoxIcon.Information,
-                   MessageBoxDefaultButton.Button1,
-                   MessageBoxOptions.DefaultDesktopOnly);
+                   "Ошибка авторизации");
+                   //MessageBoxButtons.OK,
+                   //MessageBoxIcon.Information,
+                   //MessageBoxDefaultButton.Button1,
+                   //MessageBoxOptions.DefaultDesktopOnly);
             }
         }
 

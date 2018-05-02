@@ -21,8 +21,12 @@ namespace Market.Forms
             this.mainForm = mainForm;
             InitializeComponent();
             users = DataBase.getAllUsers();
-            for (int i = 0; i < users.Count; i++) {
-                inviterTextBox.Items.Add(users[i].phone + " - " + users[i].firstName + " " + users[i].lastName);
+            users.Sort((x, y) => x.firstName.Equals(y.firstName) ?
+                        string.Compare(x.lastName, y.lastName) :
+                        string.Compare(x.firstName, y.firstName));
+            for (int i = 0; i < users.Count; i++)
+            {
+                inviterTextBox.Items.Add(users[i].ToString());
             }
 
         }
@@ -59,11 +63,11 @@ namespace Market.Forms
                 return;
             }
 
-    //        if (phone.Length != 11 || !phone.StartsWith("89"))
-    //        {
-    //            MessageBox.Show("Номер телефона должен быть указан в формате '89123456789'");
-    //            return;
-    //        }
+            if (phone.Length != 11 || !phone.StartsWith("89"))
+            {
+                MessageBox.Show("Номер телефона должен быть указан в формате '89123456789'");
+                return;
+            }
 
             if (DataBase.getUserCountByPhone(phone) > 0)
             {
@@ -78,8 +82,9 @@ namespace Market.Forms
             }
 
             DataBase.createUser(firstName, lastName, secondName, phone, parantId, 0, 0);
+            UserDB user = new UserDB(-1, firstName, lastName, secondName, phone, parantId, 0, 0);
 
-            MessageBox.Show($"Пользователь {phone} - {firstName} {lastName} зарегистрирован");
+            MessageBox.Show($"Пользователь {user.ToString()} успешно зарегистрирован");
             mainForm.Show();
             Hide();
         }
