@@ -31,13 +31,13 @@ namespace Market.Forms
             }
 
             string selectedPhone = treeView.SelectedNode.Text.Replace("-", "").Split(new char[]{' '})[3];
+            UserDB user = DataBase.getUserByPhone(selectedPhone);
             DataBase.changeUserType(selectedPhone, 1);
 
             treeView.SelectedNode.NodeFont = new Font(treeView.Font, FontStyle.Bold);
-                  TreeNode tree = new Tree(DataBase.getAllUsers()).toTreeNode();
-                 treeView.Nodes.Clear();
-                treeView.Nodes.Add(tree);
-            //treeView.Refresh();
+
+            // resize node pixel size after making bold
+            treeView.SelectedNode.Text = $"{treeView.SelectedNode.Text}, бонус ТА: {user.agentBonus}";
         }
     }
 }

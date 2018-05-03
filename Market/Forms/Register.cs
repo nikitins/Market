@@ -81,8 +81,8 @@ namespace Market.Forms
                 parantId = users[inviterTextBox.SelectedIndex].id;
             }
 
-            DataBase.createUser(firstName, lastName, secondName, phone, parantId, 0, 0);
-            UserDB user = new UserDB(-1, firstName, lastName, secondName, phone, parantId, 0, 0);
+            DataBase.createUser(firstName, lastName, secondName, phone, parantId, 0, 0, 0);
+            UserDB user = new UserDB(-1, firstName, lastName, secondName, phone, parantId, 0, 0, 0);
 
             MessageBox.Show($"Пользователь {user.ToString()} успешно зарегистрирован");
             mainForm.Show();

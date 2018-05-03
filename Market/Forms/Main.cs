@@ -1,12 +1,5 @@
 ﻿using Market.Models;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Market
@@ -19,10 +12,11 @@ namespace Market
         {
             this.account = account;
             InitializeComponent();
-            if(!account.isRoot)
+            if(account.type == 0)
             {
                 common.Hide();
                 properties.Hide();
+                userListButton.Hide();
             }
         }
 
@@ -37,8 +31,6 @@ namespace Market
         {
 
         }
-
-        private bool isRoot = false;
 
         private void registration_Click(object sender, EventArgs e)
         {

@@ -12,9 +12,10 @@ namespace Market.Models
         public string phone { get; set; }
         public int parentId { get; set; }
         public int bonus { get; set; }
+        public int agentBonus { get; set; }
         public int type { get; set; }
 
-        public UserDB(int id, string firstName, string lastName, string secondName, string phone, int parentId, int bonus, int type)
+        public UserDB(int id, string firstName, string lastName, string secondName, string phone, int parentId, int bonus, int agentBonus, int type)
         {
             this.id = id;
             this.firstName = firstName;
@@ -23,6 +24,7 @@ namespace Market.Models
             this.phone = phone;
             this.parentId = parentId;
             this.bonus = bonus;
+            this.agentBonus = agentBonus;
             this.type = type;
         }
 

@@ -4,13 +4,13 @@
     {
         public int id;
         public string name;
-        public bool isRoot;
+        public int type;
 
-        public Account(int id, string name, bool isRoot)
+        public Account(int id, string name, int type)
         {
             this.id = id;
             this.name = name;
-            this.isRoot = isRoot;
+            this.type = type;
         }
     }
 }

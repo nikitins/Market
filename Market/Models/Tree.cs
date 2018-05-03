@@ -36,7 +36,12 @@ namespace Market.Models
                 children[i] = toTreeNode(user.children[i]);
             }
 
-            TreeNode node = new TreeNode(user.ToString(), children);
+            string title = $"{user.ToString()} - бонус: {user.bonus}";
+            if(user.type != 0)
+            {
+                title += $", бонус ТА: {user.agentBonus}";
+            }
+            TreeNode node = new TreeNode(title, children);
             if (user.type == 1)
             {
                 node.NodeFont = new Font(new TreeView().Font, FontStyle.Bold);

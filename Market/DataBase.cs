@@ -23,11 +23,13 @@ namespace Market
 
         static DataBase()
         {
+            runEmpty($"DROP TABLE IF EXISTS {ACCOUNTS_TABLE_NAME};");
+
             runEmpty($"CREATE TABLE IF NOT EXISTS {ACCOUNTS_TABLE_NAME} "
                    + "(id INTEGER PRIMARY KEY AUTOINCREMENT, "
                    + "name TEXT NOT NULL, "
                    + "password_hash TEXT NOT NULL, "
-                   + "isRoot BOOLEAN NOT NULL);");
+                   + "type INT NOT NULL);");
 
             runEmpty($"DROP TABLE IF EXISTS {USERS_TABLE_NAME};");
 
@@ -39,6 +41,7 @@ namespace Market
                    + "phone TEXT NOT NULL, "
                    + "parentId INTEGER NOT NULL, "
                    + "bonus INTEGER NOT NULL, "
+                   + "agentBonus INTEGER NOT NULL, "
                    + "type INTEGER NOT NULL);"); //0 - user, 1 - agent
 
             runEmpty($"CREATE TABLE IF NOT EXISTS {SALES_TABLE_NAME} " +
@@ -51,29 +54,29 @@ namespace Market
 
             if (getUserCountByPhone("123") == 0)
             {
-                createUser("Вася", "Пупкин", "Валерьевич", "89271169536", -1, 0, 0);
+                createUser("Вася", "Пупкин", "Валерьевич", "89271169536", -1, 0, 0, 0);
             }
             if (getUserCountByPhone("456") == 0)
             {
-                createUser("Маша", "Старожилова", "Иванова", "89374368945", 1, 0, 0);
+                createUser("Маша", "Старожилова", "Иванова", "89374368945", 1, 0, 0, 0);
             }
 
 
             if (runScalar($"SELECT count(*) from {ACCOUNTS_TABLE_NAME} WHERE name='root';") == 0)
             {
-                runEmpty($"INSERT INTO {ACCOUNTS_TABLE_NAME} (name, password_hash, isRoot) VALUES('root', '{getHash("root1234")}', 1);");
+                runEmpty($"INSERT INTO {ACCOUNTS_TABLE_NAME} (name, password_hash, type) VALUES('root', '{getHash("root1234")}', 1);");
             }
             if (runScalar($"SELECT count(*) from {ACCOUNTS_TABLE_NAME} WHERE name='admin';") == 0)
             {
-                runEmpty($"INSERT INTO {ACCOUNTS_TABLE_NAME} (name, password_hash, isRoot) VALUES('admin', '{getHash("admin1234")}', 0);");
+                runEmpty($"INSERT INTO {ACCOUNTS_TABLE_NAME} (name, password_hash, type) VALUES('admin', '{getHash("admin1234")}', 0);");
             }
             if (runScalar($"SELECT count(*) from {ACCOUNTS_TABLE_NAME} WHERE name='1';") == 0)
             {
-                runEmpty($"INSERT INTO {ACCOUNTS_TABLE_NAME} (name, password_hash, isRoot) VALUES('1', '{getHash("1")}', 1);");
+                runEmpty($"INSERT INTO {ACCOUNTS_TABLE_NAME} (name, password_hash, type) VALUES('1', '{getHash("1")}', 1);");
             }
             if (runScalar($"SELECT count(*) from {ACCOUNTS_TABLE_NAME} WHERE name='2';") == 0)
             {
-                runEmpty($"INSERT INTO {ACCOUNTS_TABLE_NAME} (name, password_hash, isRoot) VALUES('2', '{getHash("2")}', 0);");
+                runEmpty($"INSERT INTO {ACCOUNTS_TABLE_NAME} (name, password_hash, type) VALUES('2', '{getHash("2")}', 0);");
             }
         }
 
@@ -96,7 +99,7 @@ namespace Market
 
         public static Account getAccount(String userName)
         {
-            String text = $"SELECT id, name, isRoot from {ACCOUNTS_TABLE_NAME} WHERE name='{userName}';";
+            String text = $"SELECT id, name, type from {ACCOUNTS_TABLE_NAME} WHERE name='{userName}';";
             using (SQLiteConnection conn = getConnection())
             {
                 conn.Open();
@@ -109,7 +112,37 @@ namespace Market
                         {
                             while (reader.Read())
                             {
-                                return new Account(reader.GetInt32(0), reader.GetString(1), reader.GetBoolean(2));
+                                return new Account(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2));
+                            }
+                        }
+                    }
+                }
+                catch (SQLiteException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return null;
+        }
+
+        public static UserDB getUserByPhone(string phone)
+        {
+            String text = $"SELECT id, firstName, lastName, secondName, phone, parentId, bonus, agentBonus, type from {USERS_TABLE_NAME} WHERE phone='{phone}';";
+            using (SQLiteConnection conn = getConnection())
+            {
+                conn.Open();
+                SQLiteCommand cmd = createComand(text, conn);
+                try
+                {
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                UserDB user = new UserDB(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4),
+                                    reader.GetInt32(5), reader.GetInt32(6), reader.GetInt32(7), reader.GetInt32(8));
+                                return user;
                             }
                         }
                     }
@@ -125,7 +158,7 @@ namespace Market
         public static List<UserDB> getAllUsers()
         {
             List<UserDB> users = new List<UserDB>();
-            String text = $"SELECT id, firstName, lastName, secondName, phone, parentId, bonus, type from {USERS_TABLE_NAME};";
+            String text = $"SELECT id, firstName, lastName, secondName, phone, parentId, bonus, agentBonus, type from {USERS_TABLE_NAME};";
             using (SQLiteConnection conn = getConnection())
             {
                 conn.Open();
@@ -138,7 +171,7 @@ namespace Market
                             while (reader.Read())
                             {
                                 UserDB user = new UserDB(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4),
-                                    reader.GetInt32(5), reader.GetInt32(6), reader.GetInt32(7));
+                                    reader.GetInt32(5), reader.GetInt32(6), reader.GetInt32(7), reader.GetInt32(8));
                                 users.Add(user);
                             }
                         }
@@ -152,10 +185,10 @@ namespace Market
             return users;
         } 
 
-        public static void createUser(string firstName, string lastName, string secondName, string phone, int parentId, int bonus, int type)
+        public static void createUser(string firstName, string lastName, string secondName, string phone, int parentId, int bonus, int agentBonus, int type)
         {
-            runEmpty($"INSERT INTO {USERS_TABLE_NAME} (firstName, lastName, secondName, phone, parentId, bonus, type) " +
-                $"VALUES ('{firstName}', '{lastName}', '{secondName}', '{phone}', {parentId}, {bonus}, {type});");
+            runEmpty($"INSERT INTO {USERS_TABLE_NAME} (firstName, lastName, secondName, phone, parentId, bonus, agentBonus, type) " +
+                $"VALUES ('{firstName}', '{lastName}', '{secondName}', '{phone}', {parentId}, {bonus}, {agentBonus}, {type});");
         }
 
         public static long getUserCountByPhone(string phone)

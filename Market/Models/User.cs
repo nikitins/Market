@@ -16,6 +16,7 @@ namespace Market.Models
         public User parent;
         public List<User> children = new List<User>();
         public int bonus;
+        public int agentBonus;
         public int type;
 
         public User(UserDB userDB, User parent)
@@ -26,6 +27,7 @@ namespace Market.Models
             secondName = userDB.secondName;
             phone = userDB.phone;
             bonus = userDB.bonus;
+            agentBonus = userDB.agentBonus;
             type = userDB.type;
             this.parent = parent;
         }
@@ -38,10 +40,10 @@ namespace Market.Models
         public override string ToString()
         {
             string res =  $"{firstName} {lastName} - {phone[0]}-{phone.Substring(1, 3)}-{phone.Substring(4, 3)}-{phone.Substring(7, 2)}-{phone.Substring(9, 2)}";
-            if (type == 1)
-            {
-                res += " --- AGENT";
-            }
+           // if (type == 1)
+          //  {
+           //     res += " --- AGENT";
+          //  }
             return res;
         }
     }

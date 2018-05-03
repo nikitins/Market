@@ -57,37 +57,37 @@ namespace Market.Forms
             // 
             this.firstNameTextBox.Location = new System.Drawing.Point(115, 81);
             this.firstNameTextBox.Name = "firstNameTextBox";
-            this.firstNameTextBox.Size = new System.Drawing.Size(190, 20);
+            this.firstNameTextBox.Size = new System.Drawing.Size(255, 20);
             this.firstNameTextBox.TabIndex = 1;
             // 
             // lastNameTextBox
             // 
             this.lastNameTextBox.Location = new System.Drawing.Point(115, 108);
             this.lastNameTextBox.Name = "lastNameTextBox";
-            this.lastNameTextBox.Size = new System.Drawing.Size(190, 20);
+            this.lastNameTextBox.Size = new System.Drawing.Size(255, 20);
             this.lastNameTextBox.TabIndex = 3;
             // 
             // seconNameTextBox
             // 
             this.seconNameTextBox.Location = new System.Drawing.Point(115, 135);
             this.seconNameTextBox.Name = "seconNameTextBox";
-            this.seconNameTextBox.Size = new System.Drawing.Size(190, 20);
+            this.seconNameTextBox.Size = new System.Drawing.Size(255, 20);
             this.seconNameTextBox.TabIndex = 4;
             // 
             // phoneTextBox
             // 
             this.phoneTextBox.Location = new System.Drawing.Point(115, 162);
             this.phoneTextBox.Name = "phoneTextBox";
-            this.phoneTextBox.Size = new System.Drawing.Size(190, 20);
+            this.phoneTextBox.Size = new System.Drawing.Size(255, 20);
             this.phoneTextBox.TabIndex = 5;
             // 
             // inviterTextBox
             // 
+            this.inviterTextBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.inviterTextBox.FormattingEnabled = true;
             this.inviterTextBox.Location = new System.Drawing.Point(115, 189);
-            this.inviterTextBox.Name = "comboBox1";
-            this.inviterTextBox.Size = new System.Drawing.Size(190, 21);
-            this.inviterTextBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            this.inviterTextBox.Name = "inviterTextBox";
+            this.inviterTextBox.Size = new System.Drawing.Size(255, 21);
             this.inviterTextBox.TabIndex = 6;
             // 
             // label2
@@ -128,7 +128,7 @@ namespace Market.Forms
             // 
             // registerButton
             // 
-            this.registerButton.Location = new System.Drawing.Point(115, 236);
+            this.registerButton.Location = new System.Drawing.Point(136, 234);
             this.registerButton.Name = "registerButton";
             this.registerButton.Size = new System.Drawing.Size(87, 23);
             this.registerButton.TabIndex = 11;
@@ -138,7 +138,7 @@ namespace Market.Forms
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(230, 236);
+            this.cancelButton.Location = new System.Drawing.Point(251, 234);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 12;
@@ -150,7 +150,7 @@ namespace Market.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(351, 331);
+            this.ClientSize = new System.Drawing.Size(439, 331);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.registerButton);
             this.Controls.Add(this.label5);
