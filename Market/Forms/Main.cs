@@ -55,11 +55,6 @@ namespace Market
 
         }
 
-        private void addAgent_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void properties_Click(object sender, EventArgs e)
         {
 
@@ -67,7 +62,8 @@ namespace Market
 
         private void sale_Click(object sender, EventArgs e)
         {
-
+            new Forms.Sale(this).Show();
+            Hide();
         }
     }
 }
