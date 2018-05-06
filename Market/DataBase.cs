@@ -92,6 +92,40 @@ namespace Market
             runEmpty($"UPDATE {ACCOUNTS_TABLE_NAME} SET password_hash='{getHash(newPassword)}' WHERE name='{name}' AND password_hash='{getHash(oldPassword)}';");
         }
 
+        public static void substractUserBonus(int userId, int bonusDelta)
+        {
+            long current = getUserBonus(userId);
+            runEmpty($"UPDATE {USERS_TABLE_NAME} SET bonus={current - bonusDelta} WHERE id={userId};");
+        }
+
+        public static int getUserBonus(int userId)
+        {
+            String text = $"SELECT bonus FROM {USERS_TABLE_NAME} WHERE id={userId};";
+            using (SQLiteConnection conn = getConnection())
+            {
+                conn.Open();
+                SQLiteCommand cmd = createComand(text, conn);
+                try
+                {
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                return reader.GetInt32(0);
+                            }
+                        }
+                    }
+                }
+                catch (SQLiteException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return -1;
+        }
+
         public static void changeUserType(String phone, int type)
         {
             runEmpty($"UPDATE {USERS_TABLE_NAME} SET type='{type}' WHERE phone='{phone}';");
@@ -183,12 +217,53 @@ namespace Market
                 }
             }
             return users;
-        } 
+        }
+
+        public static List<Sale> getAllSales()
+        {
+            List<Sale> sales = new List<Sale>();
+            String text = $"SELECT {SALES_TABLE_NAME}.sum, {SALES_TABLE_NAME}.payed_bonus, {USERS_TABLE_NAME}.firstName, {USERS_TABLE_NAME}.lastName, " +
+                $"{USERS_TABLE_NAME}.phone, {SALES_TABLE_NAME}.date from {SALES_TABLE_NAME} JOIN {USERS_TABLE_NAME} " +
+                $"ON {SALES_TABLE_NAME}.user_id={USERS_TABLE_NAME}.id;";
+            using (SQLiteConnection conn = getConnection())
+            {
+                conn.Open();
+                SQLiteCommand cmd = createComand(text, conn);
+                try
+                {
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                Sale sale = new Sale(reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2), reader.GetString(3), reader.GetString(4),
+                                    reader.GetDateTime(5));
+                                sales.Add(sale);
+                            }
+                        }
+                    }
+                }
+                catch (SQLiteException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return sales;
+        }
+
 
         public static void createUser(string firstName, string lastName, string secondName, string phone, int parentId, int bonus, int agentBonus, int type)
         {
             runEmpty($"INSERT INTO {USERS_TABLE_NAME} (firstName, lastName, secondName, phone, parentId, bonus, agentBonus, type) " +
                 $"VALUES ('{firstName}', '{lastName}', '{secondName}', '{phone}', {parentId}, {bonus}, {agentBonus}, {type});");
+        }
+
+
+        public static void createSale(int user_id, int sum, int bonus)
+        {
+          runEmpty($"INSERT INTO {SALES_TABLE_NAME} (user_id, sum, payed_bonus, date) " +
+              $"VALUES ({user_id}, {sum}, {bonus}, CURRENT_TIMESTAMP);");
         }
 
         public static long getUserCountByPhone(string phone)

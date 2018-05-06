@@ -32,7 +32,26 @@ namespace Market.Forms
 
         private void buyButton_Click(object sender, EventArgs e)
         {
+            if (userComboBox.SelectedIndex == -1)
+            {
+                MessageBox.Show("Выберете пользователя");
+                return;
+            }
 
+            int userId = users[userComboBox.SelectedIndex].id;
+            int sum = (int)sumBox.Value;
+            int bonus = (int)bonusBox.Value;
+
+
+            if (bonus > 0)
+            {
+                DataBase.substractUserBonus(userId, bonus);
+            }
+
+            DataBase.createSale(userId, sum, bonus);
+            MessageBox.Show("Покупка зарегистрирована");
+            mainForm.Show();
+            Hide();
         }
 
         private void sumChanged(object sender, EventArgs e)

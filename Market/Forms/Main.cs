@@ -29,7 +29,8 @@ namespace Market
 
         private void history_Click(object sender, EventArgs e)
         {
-
+            new Forms.History(this).Show();
+            Hide();
         }
 
         private void registration_Click(object sender, EventArgs e)

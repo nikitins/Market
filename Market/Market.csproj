@@ -85,6 +85,12 @@
     <Compile Include="Forms\ChangePassword.Designer.cs">
       <DependentUpon>ChangePassword.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\History.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\History.Designer.cs">
+      <DependentUpon>History.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -116,6 +122,7 @@
       <DependentUpon>UserList.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\Sale.cs" />
     <Compile Include="Models\SaleDB.cs" />
     <Compile Include="Models\Tree.cs" />
     <Compile Include="Models\User.cs" />
@@ -124,6 +131,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\ChangePassword.resx">
       <DependentUpon>ChangePassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\History.resx">
+      <DependentUpon>History.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
