@@ -15,6 +15,7 @@ namespace Market
         private const string ACCOUNTS_TABLE_NAME = "accounts"; 
         private const string USERS_TABLE_NAME = "users"; 
         private const string SALES_TABLE_NAME = "sales"; 
+        private const string BONUS_MOVE_TABLE_NAME = "bonus_move"; 
 
         static SQLiteConnection getConnection()
         {
@@ -52,6 +53,16 @@ namespace Market
                       "date DATETIME NOT NULL, " +
                       $"FOREIGN KEY (user_id) REFERENCES {USERS_TABLE_NAME}(id));");
 
+            runEmpty($"DROP TABLE IF EXISTS {BONUS_MOVE_TABLE_NAME};");
+            runEmpty($"CREATE TABLE IF NOT EXISTS {BONUS_MOVE_TABLE_NAME} " +
+                      "(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                      "sale_id INTEGER, " +
+                      "user_id INTEGER, " +
+                      "sum INT NOT NULL, " +
+                      "type INT NOT NULL, " +
+                      $"FOREIGN KEY (user_id) REFERENCES {USERS_TABLE_NAME}(id), " +
+                      $"FOREIGN KEY (sale_id) REFERENCES {SALES_TABLE_NAME} (id));");
+
             if (getUserCountByPhone("123") == 0)
             {
                 createUser("Вася", "Пупкин", "Валерьевич", "89271169536", -1, 0, 0, 0);
@@ -87,20 +98,29 @@ namespace Market
             return count > 0;
         }
 
+
         public static void changeAccountPassword(String name, String oldPassword, String newPassword)
         {
             runEmpty($"UPDATE {ACCOUNTS_TABLE_NAME} SET password_hash='{getHash(newPassword)}' WHERE name='{name}' AND password_hash='{getHash(oldPassword)}';");
         }
 
-        public static void substractUserBonus(int userId, int bonusDelta)
+        public static void changeUserBonus(int sale_id, int userId, int bonus, bool agent = false)
         {
-            long current = getUserBonus(userId);
-            runEmpty($"UPDATE {USERS_TABLE_NAME} SET bonus={current - bonusDelta} WHERE id={userId};");
+            int current = getUserBonus(userId, agent);
+            setUserBonus(userId, current + bonus, agent);
+            createBonusMove(sale_id, userId, bonus, agent);
         }
 
-        public static int getUserBonus(int userId)
+        public static void setUserBonus(int userId, int bonus, bool agent = false)
         {
-            String text = $"SELECT bonus FROM {USERS_TABLE_NAME} WHERE id={userId};";
+            string bonusField = agent ? "agentBonus" : "bonus";
+            runEmpty($"UPDATE {USERS_TABLE_NAME} SET {bonusField}={bonus} WHERE id={userId};");
+        }
+
+        public static int getUserBonus(int userId, bool agent = false)
+        {
+            string bonusField = agent ? "agentBonus" : "bonus";
+            String text = $"SELECT {bonusField} FROM {USERS_TABLE_NAME} WHERE id={userId};";
             using (SQLiteConnection conn = getConnection())
             {
                 conn.Open();
@@ -259,11 +279,41 @@ namespace Market
                 $"VALUES ('{firstName}', '{lastName}', '{secondName}', '{phone}', {parentId}, {bonus}, {agentBonus}, {type});");
         }
 
-
-        public static void createSale(int user_id, int sum, int bonus)
+        public static void createBonusMove(int sale_id, int user_id, int sum, bool agent = false)
         {
-          runEmpty($"INSERT INTO {SALES_TABLE_NAME} (user_id, sum, payed_bonus, date) " +
-              $"VALUES ({user_id}, {sum}, {bonus}, CURRENT_TIMESTAMP);");
+            int type = agent ? 1 : 0;
+            runEmpty($"INSERT INTO {BONUS_MOVE_TABLE_NAME} (sale_id, user_id, sum, type) " +
+                $"VALUES ({sale_id}, {user_id}, {sum}, {type});");
+        }
+
+        public static long createSale(int user_id, int sum, int bonus)
+        {
+            runEmpty($"INSERT INTO {SALES_TABLE_NAME} (user_id, sum, payed_bonus, date) " +
+                $"VALUES ({user_id}, {sum}, {bonus}, CURRENT_TIMESTAMP);");
+
+            string text = $"SELECT id FROM {SALES_TABLE_NAME} ORDER BY id DESC;";
+            using (SQLiteConnection conn = getConnection())
+            {
+                conn.Open();
+                SQLiteCommand cmd = createComand(text, conn);
+                try
+                {
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                return reader.GetInt32(0);
+                            }
+                        }
+                    }
+                } catch (SQLiteException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return -1;
         }
 
         public static long getUserCountByPhone(string phone)

@@ -6,8 +6,8 @@ namespace Market.Models
 {
     class Tree
     {
-        User root;
-        Dictionary<int, User> tree = new Dictionary<int, User>();
+        public User root;
+        public Dictionary<int, User> tree = new Dictionary<int, User>();
 
         public Tree(List<UserDB> users)
         {
@@ -25,6 +25,21 @@ namespace Market.Models
         public TreeNode toTreeNode()
         {
             return toTreeNode(root);
+        }
+
+        public List<User> getParents(int userId)
+        {
+            List<User> parents = new List<User>();
+
+            User cur = tree[userId];
+
+            while (cur != null)
+            {
+                parents.Add(cur);
+                cur = cur.parent;
+            }
+
+            return parents;
         }
 
         private TreeNode toTreeNode(User user)

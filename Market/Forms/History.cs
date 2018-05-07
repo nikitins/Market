@@ -23,5 +23,12 @@ namespace Market.Forms
             mainForm.Show();
             Hide();
         }
+
+
+        private void dataGridView_CellContentClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            
+        }
+
     }
 }

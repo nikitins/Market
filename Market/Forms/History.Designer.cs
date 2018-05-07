@@ -1,4 +1,7 @@
-﻿namespace Market.Forms
+﻿using System;
+using System.Windows.Forms;
+
+namespace Market.Forms
 {
     partial class History
     {
@@ -29,32 +32,39 @@
         private void InitializeComponent()
         {
             this.dataGridView = new System.Windows.Forms.DataGridView();
+            this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.phone = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sum = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bonus = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cancelButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
-            // dataGridVie1
+            // dataGridView
             // 
             this.dataGridView.AllowUserToAddRows = false;
             this.dataGridView.AllowUserToDeleteRows = false;
             this.dataGridView.AllowUserToOrderColumns = true;
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.date,
+            this.Date,
             this.name,
             this.phone,
             this.sum,
             this.bonus});
             this.dataGridView.Location = new System.Drawing.Point(22, 30);
-            this.dataGridView.Name = "dataGridView1";
+            this.dataGridView.Name = "dataGridView";
             this.dataGridView.ReadOnly = true;
             this.dataGridView.Size = new System.Drawing.Size(645, 324);
             this.dataGridView.TabIndex = 0;
+            this.dataGridView.RowHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_CellContentClick);
+            // 
+            // Date
+            // 
+            this.Date.HeaderText = "Дата";
+            this.Date.Name = "Date";
+            this.Date.ReadOnly = true;
             // 
             // name
             // 
@@ -67,12 +77,6 @@
             this.phone.HeaderText = "Телефон";
             this.phone.Name = "phone";
             this.phone.ReadOnly = true;
-            // 
-            // date
-            // 
-            this.date.HeaderText = "Дата";
-            this.date.Name = "Date";
-            this.date.ReadOnly = true;
             // 
             // sum
             // 
@@ -89,7 +93,7 @@
             // cancelButton
             // 
             this.cancelButton.Location = new System.Drawing.Point(331, 395);
-            this.cancelButton.Name = "button1";
+            this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 1;
             this.cancelButton.Text = "Назад";
@@ -107,6 +111,7 @@
             this.Text = "History";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);
+
         }
 
         #endregion
@@ -118,5 +123,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn bonus;
         private System.Windows.Forms.DataGridViewTextBoxColumn date;
         private System.Windows.Forms.Button cancelButton;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Date;
     }
 }

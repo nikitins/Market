@@ -42,16 +42,78 @@ namespace Market.Forms
             int sum = (int)sumBox.Value;
             int bonus = (int)bonusBox.Value;
 
+            int saleId = (int) DataBase.createSale(userId, sum, bonus);
 
             if (bonus > 0)
             {
-                DataBase.substractUserBonus(userId, bonus);
+                DataBase.changeUserBonus(saleId, userId, -bonus);
             }
 
-            DataBase.createSale(userId, sum, bonus);
+            calculateBonuses(saleId, userId, sum);
             MessageBox.Show("Покупка зарегистрирована");
             mainForm.Show();
             Hide();
+        }
+
+        private void calculateBonuses(int saleId, int userId, int sum)
+        {
+
+
+            Tree tree = new Tree(DataBase.getAllUsers());
+
+            int sum5 = sum / 20;
+            
+            // 5% cashback
+            DataBase.changeUserBonus(saleId, userId, sum5);
+
+            List<User> parents = tree.getParents(userId);
+
+            for (int i = 2; i < Math.Min(4, parents.Count); i++)
+            {
+                DataBase.changeUserBonus(saleId, parents[i].id, sum5);
+            }
+
+            bool megaPay = false;
+
+            if (parents.Count >= 2)
+            {
+                if (parents[1].type != 0)
+                {
+                    DataBase.changeUserBonus(saleId, parents[1].id, sum5, true);
+                    megaPay = true;
+                }
+            }
+
+            int agentId = -1;
+
+            for (int i = 1; i < Math.Min(parents.Count, 9); i++)
+            {
+                if (parents[i].type != 0)
+                {
+                    agentId = i;
+                }
+            }
+
+            if (agentId > 3)
+            {
+                if (agentId <= 5)
+                {
+                    DataBase.changeUserBonus(saleId, parents[agentId].id, sum5, true);
+                    megaPay = true;
+                } else
+                {
+                    if (parents[agentId].type == 2)
+                    {
+                        DataBase.changeUserBonus(saleId, parents[agentId].id, sum5, true);
+                        megaPay = true;
+                    }
+                }
+            }
+
+            if (!megaPay)
+            {
+                //MEGA
+            }
         }
 
         private void sumChanged(object sender, EventArgs e)
