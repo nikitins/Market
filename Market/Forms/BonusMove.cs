@@ -25,7 +25,14 @@ namespace Market.Forms
             foreach (Models.BonusMove move in bonusMoves)
             {
                 string agent = move.type == 0 ? "Нет" : "Да";
-                dataGridView1.Rows.Add(new object[] {$"{move.firstName} {move.lastName}", move.phone, move.sum, agent});
+                if (move.firstName == null && move.lastName == null && move.phone == null)
+                {
+                    dataGridView1.Rows.Add(new object[] { $"Общий счет", "-", move.sum, agent });
+                }
+                else
+                {
+                    dataGridView1.Rows.Add(new object[] { $"{move.firstName} {move.lastName}", move.phone, move.sum, agent });
+                }
             }
         }
 

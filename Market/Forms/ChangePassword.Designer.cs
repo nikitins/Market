@@ -126,6 +126,7 @@
             this.Text = "Смена пароля";
             this.ResumeLayout(false);
             this.PerformLayout();
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(Login.appClose);
 
         }
 

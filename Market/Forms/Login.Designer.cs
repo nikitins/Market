@@ -93,6 +93,7 @@
             this.Text = "Дисконт";
             this.ResumeLayout(false);
             this.PerformLayout();
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(appClose);
 
         }
 

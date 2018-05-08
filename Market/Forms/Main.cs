@@ -53,7 +53,8 @@ namespace Market
 
         private void common_Click(object sender, EventArgs e)
         {
-
+            int megaBonus = DataBase.getMegaBonus();
+            MessageBox.Show($"Сумма на общем счету: {megaBonus}");
         }
 
         private void properties_Click(object sender, EventArgs e)

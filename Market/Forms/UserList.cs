@@ -13,7 +13,7 @@ namespace Market.Forms
             InitializeComponent();
 
             TreeNode tree = new Tree(DataBase.getAllUsers()).toTreeNode();
-            this.treeView.Nodes.Add(tree);
+            treeView.Nodes.Add(tree);
         }
 
         private void cancel_Click(object sender, System.EventArgs e)
@@ -32,12 +32,18 @@ namespace Market.Forms
 
             string selectedPhone = treeView.SelectedNode.Text.Replace("-", "").Split(new char[]{' '})[3];
             UserDB user = DataBase.getUserByPhone(selectedPhone);
+            if (user.type != 0)
+            {
+                MessageBox.Show("Пользователь уже является агентом");
+                return;
+            }
+
             DataBase.changeUserType(selectedPhone, 1);
 
             treeView.SelectedNode.NodeFont = new Font(treeView.Font, FontStyle.Bold);
 
             // resize node pixel size after making bold
-            treeView.SelectedNode.Text = $"{treeView.SelectedNode.Text}, бонус ТА: {user.agentBonus}";
+            treeView.SelectedNode.Text = $"{treeView.SelectedNode.Text.TrimEnd()}, бонус ТА: {user.agentBonus}";
         }
     }
 }

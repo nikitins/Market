@@ -38,9 +38,9 @@ namespace Market.Forms
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(282, 423);
-            this.cancelButton.Name = "button1";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.Location = new System.Drawing.Point(293, 423);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(112, 23);
             this.cancelButton.TabIndex = 0;
             this.cancelButton.Text = "Назад";
             this.cancelButton.UseVisualStyleBackColor = true;
@@ -56,8 +56,8 @@ namespace Market.Forms
             // makeAgentButton
             // 
             this.makeAgentButton.Location = new System.Drawing.Point(164, 423);
-            this.makeAgentButton.Name = "button2";
-            this.makeAgentButton.Size = new System.Drawing.Size(75, 23);
+            this.makeAgentButton.Name = "makeAgentButton";
+            this.makeAgentButton.Size = new System.Drawing.Size(112, 23);
             this.makeAgentButton.TabIndex = 2;
             this.makeAgentButton.Text = "Сделать агентом";
             this.makeAgentButton.UseVisualStyleBackColor = true;
@@ -74,13 +74,13 @@ namespace Market.Forms
             this.Name = "UserList";
             this.Text = "UserList";
             this.ResumeLayout(false);
-
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(Login.appClose);
         }
 
         #endregion
 
         private System.Windows.Forms.Button cancelButton;
-        private System.Windows.Forms.TreeView treeView;
+        public System.Windows.Forms.TreeView treeView;
         private Button makeAgentButton;
     }
 }

@@ -120,6 +120,7 @@ namespace Market.Forms
             this.Text = "History";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(Login.appClose);
 
         }
 

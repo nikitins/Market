@@ -167,7 +167,7 @@ namespace Market.Forms
             this.Text = "Register";
             this.ResumeLayout(false);
             this.PerformLayout();
-
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(Login.appClose);
         }
 
         #endregion

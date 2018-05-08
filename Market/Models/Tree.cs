@@ -56,10 +56,12 @@ namespace Market.Models
             {
                 title += $", бонус ТА: {user.agentBonus}";
             }
+            title += "                 ";
             TreeNode node = new TreeNode(title, children);
-            if (user.type == 1)
+            if (user.type != 0)
             {
                 node.NodeFont = new Font(new TreeView().Font, FontStyle.Bold);
+
             }
             return node;
         }

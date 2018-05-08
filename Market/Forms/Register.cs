@@ -75,7 +75,7 @@ namespace Market.Forms
                 return;
             }
 
-            int parantId = 0;
+            int parantId = 1;
             if (inviterTextBox.SelectedIndex != -1)
             {
                 parantId = users[inviterTextBox.SelectedIndex].id;

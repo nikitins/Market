@@ -16,6 +16,7 @@ namespace Market
         private const string USERS_TABLE_NAME = "users"; 
         private const string SALES_TABLE_NAME = "sales"; 
         private const string BONUS_MOVE_TABLE_NAME = "bonus_move"; 
+        private const string MEGA_BONUS_TABLE_NAME = "mega_bonus"; 
 
         static SQLiteConnection getConnection()
         {
@@ -24,6 +25,11 @@ namespace Market
 
         static DataBase()
         {
+
+            runEmpty($"CREATE TABLE IF NOT EXISTS {MEGA_BONUS_TABLE_NAME} "
+                   + "(id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                   + "sum int NOT NULL);");
+
             runEmpty($"DROP TABLE IF EXISTS {ACCOUNTS_TABLE_NAME};");
 
             runEmpty($"CREATE TABLE IF NOT EXISTS {ACCOUNTS_TABLE_NAME} "
@@ -65,13 +71,18 @@ namespace Market
 
             if (getUserCountByPhone("123") == 0)
             {
-                createUser("Вася", "Пупкин", "Валерьевич", "89271169536", -1, 0, 0, 0);
+                createUser("Вася", "Пупкин", "Валерьевич", "89271169536", -1, 0, 0, 2);
             }
             if (getUserCountByPhone("456") == 0)
             {
                 createUser("Маша", "Старожилова", "Иванова", "89374368945", 1, 0, 0, 0);
             }
 
+
+            if (runScalar($"SELECT count(*) from {MEGA_BONUS_TABLE_NAME};") == 0)
+            {
+                runEmpty($"INSERT INTO {MEGA_BONUS_TABLE_NAME} (sum) VALUES(0);");
+            }
 
             if (runScalar($"SELECT count(*) from {ACCOUNTS_TABLE_NAME} WHERE name='root';") == 0)
             {
@@ -104,11 +115,18 @@ namespace Market
             runEmpty($"UPDATE {ACCOUNTS_TABLE_NAME} SET password_hash='{getHash(newPassword)}' WHERE name='{name}' AND password_hash='{getHash(oldPassword)}';");
         }
 
-        public static void changeUserBonus(int sale_id, int userId, int bonus, bool agent = false)
+        public static void changeUserBonus(int sale_id, int userId, int bonusDelta, bool agent = false)
         {
             int current = getUserBonus(userId, agent);
-            setUserBonus(userId, current + bonus, agent);
-            createBonusMove(sale_id, userId, bonus, agent);
+            setUserBonus(userId, current + bonusDelta, agent);
+            createBonusMove(sale_id, userId, bonusDelta, agent);
+        }
+
+        public static void changMegaBonus(int saleId, int bonusDelta)
+        {
+            int current = getMegaBonus();
+            setMegaBonus(current + bonusDelta);
+            createBonusMove(saleId, -1, bonusDelta, true);
         }
 
         public static void setUserBonus(int userId, int bonus, bool agent = false)
@@ -117,10 +135,42 @@ namespace Market
             runEmpty($"UPDATE {USERS_TABLE_NAME} SET {bonusField}={bonus} WHERE id={userId};");
         }
 
+        public static void setMegaBonus(int bonus)
+        {
+            runEmpty($"UPDATE {MEGA_BONUS_TABLE_NAME} SET sum={bonus} WHERE id=1;");
+        }
+
         public static int getUserBonus(int userId, bool agent = false)
         {
             string bonusField = agent ? "agentBonus" : "bonus";
             String text = $"SELECT {bonusField} FROM {USERS_TABLE_NAME} WHERE id={userId};";
+            using (SQLiteConnection conn = getConnection())
+            {
+                conn.Open();
+                SQLiteCommand cmd = createComand(text, conn);
+                try
+                {
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                return reader.GetInt32(0);
+                            }
+                        }
+                    }
+                }
+                catch (SQLiteException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return -1;
+        }
+
+        public static int getMegaBonus()
+        {   String text = $"SELECT sum FROM {MEGA_BONUS_TABLE_NAME} WHERE id=1;";
             using (SQLiteConnection conn = getConnection())
             {
                 conn.Open();
@@ -278,7 +328,7 @@ namespace Market
         {
             List<BonusMove> bonusMoves = new List<BonusMove>();
             String text = $"SELECT {BONUS_MOVE_TABLE_NAME}.id, {BONUS_MOVE_TABLE_NAME}.sum, {BONUS_MOVE_TABLE_NAME}.type, {USERS_TABLE_NAME}.firstName, {USERS_TABLE_NAME}.lastName, " +
-                $"{USERS_TABLE_NAME}.phone from {BONUS_MOVE_TABLE_NAME} JOIN {USERS_TABLE_NAME} " +
+                $"{USERS_TABLE_NAME}.phone from {BONUS_MOVE_TABLE_NAME} LEFT JOIN {USERS_TABLE_NAME} " +
                 $"ON {BONUS_MOVE_TABLE_NAME}.user_id={USERS_TABLE_NAME}.id WHERE {BONUS_MOVE_TABLE_NAME}.sale_id={saleId};";
             using (SQLiteConnection conn = getConnection())
             {
@@ -292,8 +342,10 @@ namespace Market
                         {
                             while (reader.Read())
                             {
-                                BonusMove bonusMove = new BonusMove(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2), reader.GetString(3), reader.GetString(4),
-                                    reader.GetString(5));
+                                string firstName = reader.IsDBNull(3) ? null : reader.GetString(3);
+                                string lastName = reader.IsDBNull(4) ? null : reader.GetString(4);
+                                string phone = reader.IsDBNull(5) ? null : reader.GetString(5);
+                                BonusMove bonusMove = new BonusMove(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2), firstName, lastName, phone);
                                 bonusMoves.Add(bonusMove);
                             }
                         }

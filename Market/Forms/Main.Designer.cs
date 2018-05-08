@@ -134,7 +134,7 @@
             this.Name = "Main";
             this.Text = "Главное Меню";
             this.ResumeLayout(false);
-
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(Login.appClose);
         }
 
         #endregion

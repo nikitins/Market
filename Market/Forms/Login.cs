@@ -43,5 +43,11 @@ namespace Market
             }
         }
 
+            
+        public static void appClose(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
+
     }
 }
