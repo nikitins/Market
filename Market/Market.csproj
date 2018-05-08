@@ -79,6 +79,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataBase.cs" />
+    <Compile Include="Forms\BonusMove.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\BonusMove.Designer.cs">
+      <DependentUpon>BonusMove.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ChangePassword.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,6 +128,7 @@
       <DependentUpon>UserList.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\BonusMove.cs" />
     <Compile Include="Models\Sale.cs" />
     <Compile Include="Models\SaleDB.cs" />
     <Compile Include="Models\Tree.cs" />
@@ -129,6 +136,9 @@
     <Compile Include="Models\UserDB.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\BonusMove.resx">
+      <DependentUpon>BonusMove.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ChangePassword.resx">
       <DependentUpon>ChangePassword.cs</DependentUpon>
     </EmbeddedResource>

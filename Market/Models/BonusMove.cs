@@ -6,25 +6,23 @@ using System.Threading.Tasks;
 
 namespace Market.Models
 {
-    class Sale
+    class BonusMove
     {
         public int id;
         public int sum;
-        public int bonus;
+        public int type;
         public string firstName;
         public string lastName;
         public string phone;
-        public DateTime date;
 
-        public Sale(int id, int sum, int bonus, string firstName, string lastName, string phone, DateTime date)
+        public BonusMove(int id, int sum, int type, string firstName, string lastName, string phone)
         {
             this.id = id;
             this.sum = sum;
-            this.bonus = bonus;
+            this.type = type;
             this.firstName = firstName;
             this.lastName = lastName;
             this.phone = phone;
-            this.date = date;
         }
     }
 }

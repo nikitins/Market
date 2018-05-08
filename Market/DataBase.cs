@@ -53,7 +53,7 @@ namespace Market
                       "date DATETIME NOT NULL, " +
                       $"FOREIGN KEY (user_id) REFERENCES {USERS_TABLE_NAME}(id));");
 
-            runEmpty($"DROP TABLE IF EXISTS {BONUS_MOVE_TABLE_NAME};");
+            //runEmpty($"DROP TABLE IF EXISTS {BONUS_MOVE_TABLE_NAME};");
             runEmpty($"CREATE TABLE IF NOT EXISTS {BONUS_MOVE_TABLE_NAME} " +
                       "(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                       "sale_id INTEGER, " +
@@ -242,7 +242,7 @@ namespace Market
         public static List<Sale> getAllSales()
         {
             List<Sale> sales = new List<Sale>();
-            String text = $"SELECT {SALES_TABLE_NAME}.sum, {SALES_TABLE_NAME}.payed_bonus, {USERS_TABLE_NAME}.firstName, {USERS_TABLE_NAME}.lastName, " +
+            String text = $"SELECT {SALES_TABLE_NAME}.id, {SALES_TABLE_NAME}.sum, {SALES_TABLE_NAME}.payed_bonus, {USERS_TABLE_NAME}.firstName, {USERS_TABLE_NAME}.lastName, " +
                 $"{USERS_TABLE_NAME}.phone, {SALES_TABLE_NAME}.date from {SALES_TABLE_NAME} JOIN {USERS_TABLE_NAME} " +
                 $"ON {SALES_TABLE_NAME}.user_id={USERS_TABLE_NAME}.id;";
             using (SQLiteConnection conn = getConnection())
@@ -257,8 +257,8 @@ namespace Market
                         {
                             while (reader.Read())
                             {
-                                Sale sale = new Sale(reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2), reader.GetString(3), reader.GetString(4),
-                                    reader.GetDateTime(5));
+                                Sale sale = new Sale(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2), reader.GetString(3), reader.GetString(4),
+                                    reader.GetString(5), reader.GetDateTime(6));
                                 sales.Add(sale);
                             }
                         }
@@ -272,6 +272,40 @@ namespace Market
             return sales;
         }
 
+    
+
+        public static List<BonusMove> getBonusMoveBySaleId(int saleId)
+        {
+            List<BonusMove> bonusMoves = new List<BonusMove>();
+            String text = $"SELECT {BONUS_MOVE_TABLE_NAME}.id, {BONUS_MOVE_TABLE_NAME}.sum, {BONUS_MOVE_TABLE_NAME}.type, {USERS_TABLE_NAME}.firstName, {USERS_TABLE_NAME}.lastName, " +
+                $"{USERS_TABLE_NAME}.phone from {BONUS_MOVE_TABLE_NAME} JOIN {USERS_TABLE_NAME} " +
+                $"ON {BONUS_MOVE_TABLE_NAME}.user_id={USERS_TABLE_NAME}.id WHERE {BONUS_MOVE_TABLE_NAME}.sale_id={saleId};";
+            using (SQLiteConnection conn = getConnection())
+            {
+                conn.Open();
+                SQLiteCommand cmd = createComand(text, conn);
+                try
+                {
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                BonusMove bonusMove = new BonusMove(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2), reader.GetString(3), reader.GetString(4),
+                                    reader.GetString(5));
+                                bonusMoves.Add(bonusMove);
+                            }
+                        }
+                    }
+                }
+                catch (SQLiteException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return bonusMoves;
+        }
 
         public static void createUser(string firstName, string lastName, string secondName, string phone, int parentId, int bonus, int agentBonus, int type)
         {
