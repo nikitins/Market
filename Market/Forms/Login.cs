@@ -1,4 +1,5 @@
-﻿using Market.Models;
+﻿using Market.Forms;
+using Market.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,7 +29,8 @@ namespace Market
             if (exists)
             {
                 Account account = DataBase.getAccount(name);
-                new Main(account).Show();
+                new AllForm(account).Show();
+                //new Main(account).Show();
                 Hide();
             }
             else

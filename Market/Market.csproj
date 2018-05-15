@@ -79,6 +79,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataBase.cs" />
+    <Compile Include="Forms\AllForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AllForm.Designer.cs">
+      <DependentUpon>AllForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\BonusMove.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -136,6 +142,9 @@
     <Compile Include="Models\UserDB.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\AllForm.resx">
+      <DependentUpon>AllForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\BonusMove.resx">
       <DependentUpon>BonusMove.cs</DependentUpon>
     </EmbeddedResource>

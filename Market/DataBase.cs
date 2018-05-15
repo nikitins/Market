@@ -30,7 +30,7 @@ namespace Market
                    + "(id INTEGER PRIMARY KEY AUTOINCREMENT, "
                    + "sum int NOT NULL);");
 
-            runEmpty($"DROP TABLE IF EXISTS {ACCOUNTS_TABLE_NAME};");
+            //runEmpty($"DROP TABLE IF EXISTS {ACCOUNTS_TABLE_NAME};");
 
             runEmpty($"CREATE TABLE IF NOT EXISTS {ACCOUNTS_TABLE_NAME} "
                    + "(id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -38,7 +38,7 @@ namespace Market
                    + "password_hash TEXT NOT NULL, "
                    + "type INT NOT NULL);");
 
-            runEmpty($"DROP TABLE IF EXISTS {USERS_TABLE_NAME};");
+            //runEmpty($"DROP TABLE IF EXISTS {USERS_TABLE_NAME};");
 
             runEmpty($"CREATE TABLE IF NOT EXISTS {USERS_TABLE_NAME} "
                    + "(id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -59,7 +59,7 @@ namespace Market
                       "date DATETIME NOT NULL, " +
                       $"FOREIGN KEY (user_id) REFERENCES {USERS_TABLE_NAME}(id));");
 
-            //runEmpty($"DROP TABLE IF EXISTS {BONUS_MOVE_TABLE_NAME};");
+           // runEmpty($"DROP TABLE IF EXISTS {BONUS_MOVE_TABLE_NAME};");
             runEmpty($"CREATE TABLE IF NOT EXISTS {BONUS_MOVE_TABLE_NAME} " +
                       "(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                       "sale_id INTEGER, " +
@@ -69,11 +69,11 @@ namespace Market
                       $"FOREIGN KEY (user_id) REFERENCES {USERS_TABLE_NAME}(id), " +
                       $"FOREIGN KEY (sale_id) REFERENCES {SALES_TABLE_NAME} (id));");
 
-            if (getUserCountByPhone("123") == 0)
+            if (getUserCountByPhone("89271169536") == 0)
             {
                 createUser("Вася", "Пупкин", "Валерьевич", "89271169536", -1, 0, 0, 2);
             }
-            if (getUserCountByPhone("456") == 0)
+            if (getUserCountByPhone("89374368945") == 0)
             {
                 createUser("Маша", "Старожилова", "Иванова", "89374368945", 1, 0, 0, 0);
             }
