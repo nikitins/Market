@@ -122,7 +122,7 @@ namespace Market
             createBonusMove(sale_id, userId, bonusDelta, agent);
         }
 
-        public static void changMegaBonus(int saleId, int bonusDelta)
+        public static void changeMegaBonus(int saleId, int bonusDelta)
         {
             int current = getMegaBonus();
             setMegaBonus(current + bonusDelta);

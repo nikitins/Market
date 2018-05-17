@@ -112,7 +112,7 @@ namespace Market.Forms
 
             if (!megaPay)
             {
-                DataBase.changMegaBonus(saleId, sum5);
+                DataBase.changeMegaBonus(saleId, sum5);
             }
         }
 

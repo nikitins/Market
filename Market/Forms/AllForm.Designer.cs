@@ -35,24 +35,29 @@
             this.nameLabel = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.button1 = new System.Windows.Forms.Button();
+            this.sumBox = new System.Windows.Forms.NumericUpDown();
+            this.bonusBox = new System.Windows.Forms.NumericUpDown();
+            this.buyButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.bonusesLabel = new System.Windows.Forms.Label();
             this.AllSpendLabel = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
+            this.TAbonusSumSpend = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
+            this.spendTAButton = new System.Windows.Forms.Button();
             this.f1FriendListComboBox = new System.Windows.Forms.ComboBox();
-            this.button3 = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
+            this.friendSendButton = new System.Windows.Forms.Button();
+            this.friendSendSumBox = new System.Windows.Forms.NumericUpDown();
+            this.TABonusLabel = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.statusLabel = new System.Windows.Forms.Label();
+            this.friendSendCheckBox = new System.Windows.Forms.CheckBox();
+            ((System.ComponentModel.ISupportInitialize)(this.sumBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bonusBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TAbonusSumSpend)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.friendSendSumBox)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -75,7 +80,7 @@
             // usersListBox
             // 
             this.usersListBox.FormattingEnabled = true;
-            this.usersListBox.Location = new System.Drawing.Point(32, 109);
+            this.usersListBox.Location = new System.Drawing.Point(32, 130);
             this.usersListBox.Name = "usersListBox";
             this.usersListBox.Size = new System.Drawing.Size(182, 95);
             this.usersListBox.TabIndex = 2;
@@ -117,36 +122,40 @@
             this.label5.TabIndex = 6;
             this.label5.Text = "Оплата бонусами";
             // 
-            // textBox2
+            // sumBox
             // 
-            this.textBox2.Location = new System.Drawing.Point(645, 101);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 7;
+            this.sumBox.Location = new System.Drawing.Point(232, 63);
+            this.sumBox.Maximum = new decimal(new int[] {
+            1000000000,
+            0,
+            0,
+            0});
+            this.sumBox.Name = "sumBox";
+            this.sumBox.Size = new System.Drawing.Size(73, 20);
+            this.sumBox.TabIndex = 8;
+            this.sumBox.ValueChanged += new System.EventHandler(this.sumChanged);
             // 
-            // numericUpDown1
+            // bonusBox
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(232, 63);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(73, 20);
-            this.numericUpDown1.TabIndex = 8;
+            this.bonusBox.Location = new System.Drawing.Point(350, 63);
+            this.bonusBox.Maximum = new decimal(new int[] {
+            1000000000,
+            0,
+            0,
+            0});
+            this.bonusBox.Name = "bonusBox";
+            this.bonusBox.Size = new System.Drawing.Size(73, 20);
+            this.bonusBox.TabIndex = 9;
             // 
-            // numericUpDown2
+            // buyButton
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(350, 63);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(73, 20);
-            this.numericUpDown2.TabIndex = 9;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(445, 60);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.buyButton.Location = new System.Drawing.Point(445, 60);
+            this.buyButton.Name = "buyButton";
+            this.buyButton.Size = new System.Drawing.Size(75, 23);
+            this.buyButton.TabIndex = 10;
+            this.buyButton.Text = "Оплатить";
+            this.buyButton.UseVisualStyleBackColor = true;
+            this.buyButton.Click += new System.EventHandler(this.buyButton_Click);
             // 
             // label6
             // 
@@ -187,27 +196,32 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(350, 108);
+            this.label10.Location = new System.Drawing.Point(347, 109);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(47, 13);
             this.label10.TabIndex = 15;
             this.label10.Text = "Счет ТА";
             // 
-            // numericUpDown3
+            // TAbonusSumSpend
             // 
-            this.numericUpDown3.Location = new System.Drawing.Point(460, 134);
-            this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(75, 20);
-            this.numericUpDown3.TabIndex = 16;
+            this.TAbonusSumSpend.Location = new System.Drawing.Point(460, 134);
+            this.TAbonusSumSpend.Maximum = new decimal(new int[] {
+            10000000,
+            0,
+            0,
+            0});
+            this.TAbonusSumSpend.Name = "TAbonusSumSpend";
+            this.TAbonusSumSpend.Size = new System.Drawing.Size(75, 20);
+            this.TAbonusSumSpend.TabIndex = 16;
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(642, 40);
+            this.label11.Location = new System.Drawing.Point(665, 37);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(41, 13);
+            this.label11.Size = new System.Drawing.Size(81, 13);
             this.label11.TabIndex = 17;
-            this.label11.Text = "label11";
+            this.label11.Text = "Перевод другу";
             // 
             // label12
             // 
@@ -218,52 +232,107 @@
             this.label12.TabIndex = 18;
             this.label12.Text = "Списать ТА";
             // 
-            // button2
+            // spendTAButton
             // 
-            this.button2.Location = new System.Drawing.Point(460, 175);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 19;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
+            this.spendTAButton.Location = new System.Drawing.Point(460, 175);
+            this.spendTAButton.Name = "spendTAButton";
+            this.spendTAButton.Size = new System.Drawing.Size(75, 23);
+            this.spendTAButton.TabIndex = 19;
+            this.spendTAButton.Text = "Списать";
+            this.spendTAButton.UseVisualStyleBackColor = true;
+            this.spendTAButton.Click += new System.EventHandler(this.spendTAButton_Click);
             // 
             // f1FriendListComboBox
             // 
             this.f1FriendListComboBox.FormattingEnabled = true;
             this.f1FriendListComboBox.Location = new System.Drawing.Point(645, 63);
             this.f1FriendListComboBox.Name = "f1FriendListComboBox";
-            this.f1FriendListComboBox.Size = new System.Drawing.Size(121, 21);
+            this.f1FriendListComboBox.Size = new System.Drawing.Size(173, 21);
             this.f1FriendListComboBox.TabIndex = 20;
             // 
-            // button3
+            // friendSendButton
             // 
-            this.button3.Location = new System.Drawing.Point(645, 130);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 21;
-            this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
+            this.friendSendButton.Location = new System.Drawing.Point(645, 130);
+            this.friendSendButton.Name = "friendSendButton";
+            this.friendSendButton.Size = new System.Drawing.Size(75, 23);
+            this.friendSendButton.TabIndex = 21;
+            this.friendSendButton.Text = "Перевести";
+            this.friendSendButton.UseVisualStyleBackColor = true;
+            this.friendSendButton.Click += new System.EventHandler(this.friendSendButton_Click);
+            // 
+            // friendSendSumBox
+            // 
+            this.friendSendSumBox.Location = new System.Drawing.Point(646, 101);
+            this.friendSendSumBox.Maximum = new decimal(new int[] {
+            100000000,
+            0,
+            0,
+            0});
+            this.friendSendSumBox.Name = "friendSendSumBox";
+            this.friendSendSumBox.Size = new System.Drawing.Size(74, 20);
+            this.friendSendSumBox.TabIndex = 23;
+            // 
+            // TABonusLabel
+            // 
+            this.TABonusLabel.AutoSize = true;
+            this.TABonusLabel.Location = new System.Drawing.Point(347, 134);
+            this.TABonusLabel.Name = "TABonusLabel";
+            this.TABonusLabel.Size = new System.Drawing.Size(10, 13);
+            this.TABonusLabel.TabIndex = 24;
+            this.TABonusLabel.Text = "-";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(29, 101);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(41, 13);
+            this.label8.TabIndex = 26;
+            this.label8.Text = "Статус";
+            // 
+            // statusLabel
+            // 
+            this.statusLabel.AutoSize = true;
+            this.statusLabel.Location = new System.Drawing.Point(76, 103);
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(10, 13);
+            this.statusLabel.TabIndex = 27;
+            this.statusLabel.Text = "-";
+            // 
+            // friendSendCheckBox
+            // 
+            this.friendSendCheckBox.AutoSize = true;
+            this.friendSendCheckBox.Location = new System.Drawing.Point(738, 104);
+            this.friendSendCheckBox.Name = "friendSendCheckBox";
+            this.friendSendCheckBox.Size = new System.Drawing.Size(80, 17);
+            this.friendSendCheckBox.TabIndex = 28;
+            this.friendSendCheckBox.Text = "ТА бонусы";
+            this.friendSendCheckBox.UseVisualStyleBackColor = true;
             // 
             // AllForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(929, 517);
-            this.Controls.Add(this.button3);
+            this.Controls.Add(this.friendSendCheckBox);
+            this.Controls.Add(this.statusLabel);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.TABonusLabel);
+            this.Controls.Add(this.friendSendSumBox);
+            this.Controls.Add(this.friendSendButton);
             this.Controls.Add(this.f1FriendListComboBox);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.spendTAButton);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
-            this.Controls.Add(this.numericUpDown3);
+            this.Controls.Add(this.TAbonusSumSpend);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.AllSpendLabel);
             this.Controls.Add(this.bonusesLabel);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.numericUpDown2);
-            this.Controls.Add(this.numericUpDown1);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.buyButton);
+            this.Controls.Add(this.bonusBox);
+            this.Controls.Add(this.sumBox);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.nameLabel);
@@ -274,14 +343,12 @@
             this.Name = "AllForm";
             this.Text = "AllForm";
             this.Load += new System.EventHandler(this.AllForm_Load);
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(Login.appClose);
-
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sumBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bonusBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TAbonusSumSpend)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.friendSendSumBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
 
         }
 
@@ -294,20 +361,24 @@
         private System.Windows.Forms.Label nameLabel;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.NumericUpDown sumBox;
+        private System.Windows.Forms.NumericUpDown bonusBox;
+        private System.Windows.Forms.Button buyButton;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label bonusesLabel;
         private System.Windows.Forms.Label AllSpendLabel;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.NumericUpDown numericUpDown3;
+        private System.Windows.Forms.NumericUpDown TAbonusSumSpend;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button spendTAButton;
         private System.Windows.Forms.ComboBox f1FriendListComboBox;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button friendSendButton;
+        private System.Windows.Forms.NumericUpDown friendSendSumBox;
+        private System.Windows.Forms.Label TABonusLabel;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label statusLabel;
+        private System.Windows.Forms.CheckBox friendSendCheckBox;
     }
 }
