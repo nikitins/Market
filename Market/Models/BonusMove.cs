@@ -14,8 +14,9 @@ namespace Market.Models
         public string firstName;
         public string lastName;
         public string phone;
+        public DateTime date;
 
-        public BonusMove(int id, int sum, int type, string firstName, string lastName, string phone)
+        public BonusMove(int id, int sum, int type, string firstName, string lastName, string phone, DateTime date)
         {
             this.id = id;
             this.sum = sum;
@@ -23,6 +24,12 @@ namespace Market.Models
             this.firstName = firstName;
             this.lastName = lastName;
             this.phone = phone;
+            this.date = date;
+        }
+
+        internal static int compareBydate(BonusMove x, BonusMove y)
+        {
+            return x.date.CompareTo(y.date);
         }
     }
 }

@@ -19,6 +19,7 @@ namespace Market.Forms
         private List<UserDB> currentUsers = new List<UserDB>();
         private User selectedUser = null;
         private List<Control> adminElements = new List<Control>();
+        private bool treeHided = false;
         
         public AllForm(Account account)
         {
@@ -43,11 +44,15 @@ namespace Market.Forms
             adminElements.Add(SpendedMegaBonusLabel);
             adminElements.Add(spendMegaBonusButton);
             adminElements.Add(spendMegaBonusSum);
+            adminElements.Add(HideButton);
+            adminElements.Add(treeView);
 
             allUsers = DataBase.getAllUsers();
             allUsers.Sort(new Comparison<UserDB>(UserDB.compareByPhone));
 
             tree = new Tree(allUsers);
+
+            treeView.Nodes.Add(tree.toTreeNode());
 
             fillUsersList("");
             setMegaBonusData();
@@ -169,7 +174,7 @@ namespace Market.Forms
             }
         }
 
-        private void updateUsersInfoFromDB()
+        public void updateUsersInfoFromDB()
         {
             allUsers = DataBase.getAllUsers();
             allUsers.Sort(new Comparison<UserDB>(UserDB.compareByPhone));
@@ -188,6 +193,11 @@ namespace Market.Forms
                 }
                 
             }
+
+            treeView.Nodes.Clear();
+            treeView.Nodes.Add(tree.toTreeNode());
+
+            fillUsersList("");
 
             if (selectedUser != null)
             {
@@ -483,6 +493,20 @@ namespace Market.Forms
             DataBase.changeUserBonus(-2, selectedUser.id, sum, megaBonusTACheckBox.Checked);
 
             updateUsersInfoFromDB();
+        }
+
+        private void HideButton_Click(object sender, EventArgs e)
+        {
+            if (treeHided)
+            {
+                treeView.Show();
+                HideButton.Text = "Свернуть";
+            } else
+            {
+                treeView.Hide();
+                HideButton.Text = "Развернуть";
+            }
+            treeHided = !treeHided;
         }
     }
 }

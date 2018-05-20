@@ -67,6 +67,11 @@ namespace Market.Forms
                 return;
             }
 
+            if (secondName.Length == 0)
+            {
+                MessageBox.Show("Отчество не может быть пустым");
+                return;
+            }
 
             if (phone.Length == 0)
             {
@@ -96,6 +101,7 @@ namespace Market.Forms
             UserDB user = new UserDB(-1, firstName, lastName, secondName, phone, parantId, 0, 0, 0);
 
             MessageBox.Show($"Пользователь {user.ToString()} успешно зарегистрирован");
+            allForm.updateUsersInfoFromDB();
             allForm.Show();
             Hide();
         }

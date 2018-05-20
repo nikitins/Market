@@ -32,12 +32,13 @@ namespace Market.Forms
         private void InitializeComponent()
         {
             this.dataGridView = new System.Windows.Forms.DataGridView();
-            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+          //  this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.phone = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.type = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sum = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bonus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bonusType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cancelButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
@@ -49,25 +50,19 @@ namespace Market.Forms
             this.dataGridView.AllowUserToOrderColumns = true;
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Id,
             this.Date,
             this.name,
-            this.phone,
+            this.type,
             this.sum,
-            this.bonus});
+            this.bonus,
+            this.bonusType});
             this.dataGridView.Location = new System.Drawing.Point(22, 30);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.ReadOnly = true;
             this.dataGridView.Size = new System.Drawing.Size(753, 324);
             this.dataGridView.TabIndex = 0;
-            this.dataGridView.RowHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_CellContentClick);
-            this.dataGridView.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_CellContentClick);
-            // 
-            // Id
-            // 
-            this.Id.HeaderText = "ID";
-            this.Id.Name = "Id";
-            this.Id.ReadOnly = true;
+         //   this.dataGridView.RowHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_CellContentClick);
+       //     this.dataGridView.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_CellContentClick);
             // 
             // Date
             // 
@@ -81,11 +76,11 @@ namespace Market.Forms
             this.name.Name = "name";
             this.name.ReadOnly = true;
             // 
-            // phone
+            // type
             // 
-            this.phone.HeaderText = "Телефон";
-            this.phone.Name = "phone";
-            this.phone.ReadOnly = true;
+            this.type.HeaderText = "Тип";
+            this.type.Name = "type";
+            this.type.ReadOnly = true;
             // 
             // sum
             // 
@@ -97,7 +92,13 @@ namespace Market.Forms
             // 
             this.bonus.HeaderText = "Оплачено бонусами";
             this.bonus.Name = "bonus";
-            this.bonus.ReadOnly = true;
+            this.bonus.ReadOnly = true;     
+            // 
+            // bonusType
+            // 
+            this.bonusType.HeaderText = "Тип бонусов";
+            this.bonusType.Name = "bonusType";
+            this.bonusType.ReadOnly = true;
             // 
             // cancelButton
             // 
@@ -128,13 +129,13 @@ namespace Market.Forms
 
         private System.Windows.Forms.DataGridView dataGridView;
         private System.Windows.Forms.DataGridViewTextBoxColumn name;
-        private System.Windows.Forms.DataGridViewTextBoxColumn phone;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idCell;
+        private System.Windows.Forms.DataGridViewTextBoxColumn type;
         private System.Windows.Forms.DataGridViewTextBoxColumn sum;
         private System.Windows.Forms.DataGridViewTextBoxColumn bonus;
+        private System.Windows.Forms.DataGridViewTextBoxColumn bonusType;
         private System.Windows.Forms.DataGridViewTextBoxColumn date;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.DataGridViewTextBoxColumn Date;
-        private DataGridViewTextBoxColumn Id;
+      //  private DataGridViewTextBoxColumn Id;
     }
 }

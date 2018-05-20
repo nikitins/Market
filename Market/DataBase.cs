@@ -59,9 +59,10 @@ namespace Market
                       "date DATETIME NOT NULL, " +
                       $"FOREIGN KEY (user_id) REFERENCES {USERS_TABLE_NAME}(id));");
 
-           // runEmpty($"DROP TABLE IF EXISTS {BONUS_MOVE_TABLE_NAME};");
+            runEmpty($"DROP TABLE IF EXISTS {BONUS_MOVE_TABLE_NAME};");
             runEmpty($"CREATE TABLE IF NOT EXISTS {BONUS_MOVE_TABLE_NAME} " +
                       "(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                      "date DATETIME NOT NULL, " +
                       "sale_id INTEGER, " +
                       "user_id INTEGER, " +
                       "sum INT NOT NULL, " +
@@ -300,7 +301,7 @@ namespace Market
         public static List<BonusMove> getBonusMoveBySaleId(int saleId)
         {
             List<BonusMove> bonusMoves = new List<BonusMove>();
-            String text = $"SELECT {BONUS_MOVE_TABLE_NAME}.id, {BONUS_MOVE_TABLE_NAME}.sum, {BONUS_MOVE_TABLE_NAME}.type, {USERS_TABLE_NAME}.firstName, {USERS_TABLE_NAME}.lastName, " +
+            String text = $"SELECT {BONUS_MOVE_TABLE_NAME}.id, {BONUS_MOVE_TABLE_NAME}.sum, {BONUS_MOVE_TABLE_NAME}.type, {BONUS_MOVE_TABLE_NAME}.date, {USERS_TABLE_NAME}.firstName, {USERS_TABLE_NAME}.lastName, " +
                 $"{USERS_TABLE_NAME}.phone from {BONUS_MOVE_TABLE_NAME} LEFT JOIN {USERS_TABLE_NAME} " +
                 $"ON {BONUS_MOVE_TABLE_NAME}.user_id={USERS_TABLE_NAME}.id WHERE {BONUS_MOVE_TABLE_NAME}.sale_id={saleId};";
             using (SQLiteConnection conn = getConnection())
@@ -315,10 +316,45 @@ namespace Market
                         {
                             while (reader.Read())
                             {
-                                string firstName = reader.IsDBNull(3) ? null : reader.GetString(3);
-                                string lastName = reader.IsDBNull(4) ? null : reader.GetString(4);
-                                string phone = reader.IsDBNull(5) ? null : reader.GetString(5);
-                                BonusMove bonusMove = new BonusMove(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2), firstName, lastName, phone);
+                                string firstName = reader.IsDBNull(3) ? null : reader.GetString(4);
+                                string lastName = reader.IsDBNull(4) ? null : reader.GetString(5);
+                                string phone = reader.IsDBNull(5) ? null : reader.GetString(6);
+                                BonusMove bonusMove = new BonusMove(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2), firstName, lastName, phone, reader.GetDateTime(3));
+                                bonusMoves.Add(bonusMove);
+                            }
+                        }
+                    }
+                }
+                catch (SQLiteException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return bonusMoves;
+        }
+
+        public static List<BonusMove> getAllBonusMoves()
+        {
+            List<BonusMove> bonusMoves = new List<BonusMove>();
+            String text = $"SELECT {BONUS_MOVE_TABLE_NAME}.id, {BONUS_MOVE_TABLE_NAME}.sum, {BONUS_MOVE_TABLE_NAME}.type, {BONUS_MOVE_TABLE_NAME}.date, {USERS_TABLE_NAME}.firstName, {USERS_TABLE_NAME}.lastName, " +
+                $"{USERS_TABLE_NAME}.phone from {BONUS_MOVE_TABLE_NAME} LEFT JOIN {USERS_TABLE_NAME} " +
+                $"ON {BONUS_MOVE_TABLE_NAME}.user_id={USERS_TABLE_NAME}.id;";
+            using (SQLiteConnection conn = getConnection())
+            {
+                conn.Open();
+                SQLiteCommand cmd = createComand(text, conn);
+                try
+                {
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                string firstName = reader.IsDBNull(3) ? null : reader.GetString(4);
+                                string lastName = reader.IsDBNull(4) ? null : reader.GetString(5);
+                                string phone = reader.IsDBNull(5) ? null : reader.GetString(6);
+                                BonusMove bonusMove = new BonusMove(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2), firstName, lastName, phone, reader.GetDateTime(3));
                                 bonusMoves.Add(bonusMove);
                             }
                         }
@@ -341,8 +377,8 @@ namespace Market
         public static void createBonusMove(int sale_id, int user_id, int sum, bool agent = false)
         {
             int type = agent ? 1 : 0;
-            runEmpty($"INSERT INTO {BONUS_MOVE_TABLE_NAME} (sale_id, user_id, sum, type) " +
-                $"VALUES ({sale_id}, {user_id}, {sum}, {type});");
+            runEmpty($"INSERT INTO {BONUS_MOVE_TABLE_NAME} (sale_id, user_id, sum, type, date) " +
+                $"VALUES ({sale_id}, {user_id}, {sum}, {type}, CURRENT_TIMESTAMP);");
         }
 
         public static long createSale(int user_id, int sum, int bonus)

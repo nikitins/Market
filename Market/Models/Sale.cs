@@ -26,5 +26,10 @@ namespace Market.Models
             this.phone = phone;
             this.date = date;
         }
+
+        internal static int compareByDate(Sale x, Sale y)
+        {
+            return x.date.CompareTo(y.date);
+        }
     }
 }

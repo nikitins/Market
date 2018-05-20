@@ -74,6 +74,8 @@ namespace Market.Forms
             this.sentMegaSum = new System.Windows.Forms.NumericUpDown();
             this.sentMegaToUserButton = new System.Windows.Forms.Button();
             this.megaBonusTACheckBox = new System.Windows.Forms.CheckBox();
+            this.treeView = new System.Windows.Forms.TreeView();
+            this.HideButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.sumBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bonusBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TAbonusSumSpend)).BeginInit();
@@ -509,11 +511,30 @@ namespace Market.Forms
             this.megaBonusTACheckBox.Text = "ТА бонусы";
             this.megaBonusTACheckBox.UseVisualStyleBackColor = true;
             // 
+            // treeView
+            // 
+            this.treeView.Location = new System.Drawing.Point(235, 243);
+            this.treeView.Name = "treeView";
+            this.treeView.Size = new System.Drawing.Size(410, 250);
+            this.treeView.TabIndex = 47;
+            // 
+            // HideButton
+            // 
+            this.HideButton.Location = new System.Drawing.Point(235, 214);
+            this.HideButton.Name = "HideButton";
+            this.HideButton.Size = new System.Drawing.Size(75, 23);
+            this.HideButton.TabIndex = 48;
+            this.HideButton.Text = "Свернуть";
+            this.HideButton.UseVisualStyleBackColor = true;
+            this.HideButton.Click += new System.EventHandler(this.HideButton_Click);
+            // 
             // AllForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1046, 517);
+            this.Controls.Add(this.HideButton);
+            this.Controls.Add(this.treeView);
             this.Controls.Add(this.megaBonusTACheckBox);
             this.Controls.Add(this.sentMegaToUserButton);
             this.Controls.Add(this.sentMegaSum);
@@ -569,6 +590,7 @@ namespace Market.Forms
             ((System.ComponentModel.ISupportInitialize)(this.sentMegaSum)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(Login.appClose);
 
         }
 
@@ -618,5 +640,7 @@ namespace Market.Forms
         private System.Windows.Forms.NumericUpDown sentMegaSum;
         private System.Windows.Forms.Button sentMegaToUserButton;
         private System.Windows.Forms.CheckBox megaBonusTACheckBox;
+        private System.Windows.Forms.TreeView treeView;
+        private System.Windows.Forms.Button HideButton;
     }
 }
