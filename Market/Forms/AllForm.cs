@@ -34,6 +34,15 @@ namespace Market.Forms
             adminElements.Add(makeSTAbutton);
             adminElements.Add(makeUserbutton);
             adminElements.Add(makeTAbutton);
+            adminElements.Add(label13);
+            adminElements.Add(label99);
+            adminElements.Add(MegaBonusLabel);
+            adminElements.Add(megaBonusTACheckBox);
+            adminElements.Add(sentMegaSum);
+            adminElements.Add(sentMegaToUserButton);
+            adminElements.Add(SpendedMegaBonusLabel);
+            adminElements.Add(spendMegaBonusButton);
+            adminElements.Add(spendMegaBonusSum);
 
             allUsers = DataBase.getAllUsers();
             allUsers.Sort(new Comparison<UserDB>(UserDB.compareByPhone));
@@ -42,6 +51,14 @@ namespace Market.Forms
 
             fillUsersList("");
             setMegaBonusData();
+
+            if (account.type == 0)
+            {
+                hideAdminElements();
+                label9.Hide();
+                userModeButton.Hide();
+                adminModeButton.Hide();
+            }
         }
 
         private void AllForm_Load(object sender, EventArgs e)
@@ -402,10 +419,15 @@ namespace Market.Forms
 
         private void userModeButton_Click(object sender, EventArgs e)
         {
-           foreach(Control c in adminElements)
-           {
+            hideAdminElements();
+        }
+
+        private void hideAdminElements()
+        {
+            foreach (Control c in adminElements)
+            {
                 c.Hide();
-           }
+            }
         }
 
         private void adminModeButton_Click(object sender, EventArgs e)
