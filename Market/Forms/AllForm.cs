@@ -113,8 +113,11 @@ namespace Market.Forms
 
         private void setMegaBonusData()
         {
-            MegaBonusLabel.Text = DataBase.getMegaBonus().ToString();
+            int megaBonus = DataBase.getMegaBonus();
+            MegaBonusLabel.Text = megaBonus.ToString();
             SpendedMegaBonusLabel.Text = DataBase.getSpendedMegaBonus().ToString();
+            spendMegaBonusSum.Maximum = megaBonus;
+            sentMegaSum.Maximum = megaBonus;
         }
 
         private void clearSelectedUserData()
@@ -411,6 +414,53 @@ namespace Market.Forms
             {
                 c.Show();
             }
+        }
+
+        private void spendMegaBonusButton_Click(object sender, EventArgs e)
+        {
+            int megaBonus = (int) spendMegaBonusSum.Value;
+
+            if (megaBonus <= 0)
+            {
+                MessageBox.Show("Сумма списания должна быть больше 0");
+                return;
+            }
+
+            DataBase.changeMegaBonus(-1, -megaBonus);
+
+            MessageBox.Show($"Списано: {megaBonus}");
+            setMegaBonusData();
+        }
+
+        private void sentMegaToUserButton_Click(object sender, EventArgs e)
+        {
+            if (selectedUser == null)
+            {
+                MessageBox.Show("Выберите пользователя");
+                return;
+            }
+
+            if (megaBonusTACheckBox.Checked)
+            {
+                if (selectedUser.type == 0)
+                {
+                    MessageBox.Show("Пользователь не является агентом");
+                    return;
+                }
+            }
+
+            int sum = (int) sentMegaSum.Value;
+
+            if (sum <= 0)
+            {
+                MessageBox.Show("Сумма перевода должна быть больше 0");
+                return;
+            }
+
+            DataBase.changeMegaBonus(-2, -sum);
+            DataBase.changeUserBonus(-2, selectedUser.id, sum, megaBonusTACheckBox.Checked);
+
+            updateUsersInfoFromDB();
         }
     }
 }

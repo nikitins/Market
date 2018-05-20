@@ -69,10 +69,17 @@ namespace Market.Forms
             this.MegaBonusLabel = new System.Windows.Forms.Label();
             this.label99 = new System.Windows.Forms.Label();
             this.SpendedMegaBonusLabel = new System.Windows.Forms.Label();
+            this.spendMegaBonusSum = new System.Windows.Forms.NumericUpDown();
+            this.spendMegaBonusButton = new System.Windows.Forms.Button();
+            this.sentMegaSum = new System.Windows.Forms.NumericUpDown();
+            this.sentMegaToUserButton = new System.Windows.Forms.Button();
+            this.megaBonusTACheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.sumBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bonusBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TAbonusSumSpend)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.friendSendSumBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spendMegaBonusSum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sentMegaSum)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -415,7 +422,7 @@ namespace Market.Forms
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(864, 41);
+            this.label13.Location = new System.Drawing.Point(799, 36);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(48, 13);
             this.label13.TabIndex = 38;
@@ -424,7 +431,7 @@ namespace Market.Forms
             // MegaBonusLabel
             // 
             this.MegaBonusLabel.AutoSize = true;
-            this.MegaBonusLabel.Location = new System.Drawing.Point(937, 40);
+            this.MegaBonusLabel.Location = new System.Drawing.Point(872, 35);
             this.MegaBonusLabel.Name = "MegaBonusLabel";
             this.MegaBonusLabel.Size = new System.Drawing.Size(10, 13);
             this.MegaBonusLabel.TabIndex = 39;
@@ -433,7 +440,7 @@ namespace Market.Forms
             // label99
             // 
             this.label99.AutoSize = true;
-            this.label99.Location = new System.Drawing.Point(864, 65);
+            this.label99.Location = new System.Drawing.Point(799, 60);
             this.label99.Name = "label99";
             this.label99.Size = new System.Drawing.Size(56, 13);
             this.label99.TabIndex = 40;
@@ -442,17 +449,76 @@ namespace Market.Forms
             // SpendedMegaBonusLabel
             // 
             this.SpendedMegaBonusLabel.AutoSize = true;
-            this.SpendedMegaBonusLabel.Location = new System.Drawing.Point(937, 65);
+            this.SpendedMegaBonusLabel.Location = new System.Drawing.Point(872, 60);
             this.SpendedMegaBonusLabel.Name = "SpendedMegaBonusLabel";
             this.SpendedMegaBonusLabel.Size = new System.Drawing.Size(10, 13);
             this.SpendedMegaBonusLabel.TabIndex = 41;
             this.SpendedMegaBonusLabel.Text = "-";
+            // 
+            // spendMegaBonusSum
+            // 
+            this.spendMegaBonusSum.Location = new System.Drawing.Point(913, 34);
+            this.spendMegaBonusSum.Maximum = new decimal(new int[] {
+            1000000000,
+            0,
+            0,
+            0});
+            this.spendMegaBonusSum.Name = "spendMegaBonusSum";
+            this.spendMegaBonusSum.Size = new System.Drawing.Size(80, 20);
+            this.spendMegaBonusSum.TabIndex = 42;
+            // 
+            // spendMegaBonusButton
+            // 
+            this.spendMegaBonusButton.Location = new System.Drawing.Point(913, 60);
+            this.spendMegaBonusButton.Name = "spendMegaBonusButton";
+            this.spendMegaBonusButton.Size = new System.Drawing.Size(80, 23);
+            this.spendMegaBonusButton.TabIndex = 43;
+            this.spendMegaBonusButton.Text = "Списать";
+            this.spendMegaBonusButton.UseVisualStyleBackColor = true;
+            this.spendMegaBonusButton.Click += new System.EventHandler(this.spendMegaBonusButton_Click);
+            // 
+            // sentMegaSum
+            // 
+            this.sentMegaSum.Location = new System.Drawing.Point(802, 94);
+            this.sentMegaSum.Maximum = new decimal(new int[] {
+            1000000000,
+            0,
+            0,
+            0});
+            this.sentMegaSum.Name = "sentMegaSum";
+            this.sentMegaSum.Size = new System.Drawing.Size(75, 20);
+            this.sentMegaSum.TabIndex = 44;
+            // 
+            // sentMegaToUserButton
+            // 
+            this.sentMegaToUserButton.Location = new System.Drawing.Point(802, 122);
+            this.sentMegaToUserButton.Name = "sentMegaToUserButton";
+            this.sentMegaToUserButton.Size = new System.Drawing.Size(191, 23);
+            this.sentMegaToUserButton.TabIndex = 45;
+            this.sentMegaToUserButton.Text = "Перевести пользователю";
+            this.sentMegaToUserButton.UseVisualStyleBackColor = true;
+            this.sentMegaToUserButton.Click += new System.EventHandler(this.sentMegaToUserButton_Click);
+            // 
+            // megaBonusTACheckBox
+            // 
+            this.megaBonusTACheckBox.AutoSize = true;
+            this.megaBonusTACheckBox.Location = new System.Drawing.Point(893, 95);
+            this.megaBonusTACheckBox.Name = "megaBonusTACheckBox";
+            this.megaBonusTACheckBox.Size = new System.Drawing.Size(80, 17);
+            this.megaBonusTACheckBox.TabIndex = 46;
+            this.megaBonusTACheckBox.Text = "ТА бонусы";
+            this.megaBonusTACheckBox.UseVisualStyleBackColor = true;
             // 
             // AllForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1046, 517);
+            this.Controls.Add(this.megaBonusTACheckBox);
+            this.Controls.Add(this.sentMegaToUserButton);
+            this.Controls.Add(this.sentMegaSum);
+            this.Controls.Add(this.spendMegaBonusButton);
+            this.Controls.Add(this.spendMegaBonusSum);
             this.Controls.Add(this.SpendedMegaBonusLabel);
             this.Controls.Add(this.label99);
             this.Controls.Add(this.MegaBonusLabel);
@@ -499,6 +565,8 @@ namespace Market.Forms
             ((System.ComponentModel.ISupportInitialize)(this.bonusBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.TAbonusSumSpend)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.friendSendSumBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spendMegaBonusSum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sentMegaSum)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -545,5 +613,10 @@ namespace Market.Forms
         private System.Windows.Forms.Label MegaBonusLabel;
         private System.Windows.Forms.Label label99;
         private System.Windows.Forms.Label SpendedMegaBonusLabel;
+        private System.Windows.Forms.NumericUpDown spendMegaBonusSum;
+        private System.Windows.Forms.Button spendMegaBonusButton;
+        private System.Windows.Forms.NumericUpDown sentMegaSum;
+        private System.Windows.Forms.Button sentMegaToUserButton;
+        private System.Windows.Forms.CheckBox megaBonusTACheckBox;
     }
 }
