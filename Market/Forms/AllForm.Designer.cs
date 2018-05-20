@@ -1,4 +1,6 @@
-﻿namespace Market.Forms
+﻿using System.Collections.Generic;
+
+namespace Market.Forms
 {
     partial class AllForm
     {
@@ -54,6 +56,19 @@
             this.label8 = new System.Windows.Forms.Label();
             this.statusLabel = new System.Windows.Forms.Label();
             this.friendSendCheckBox = new System.Windows.Forms.CheckBox();
+            this.makeTAbutton = new System.Windows.Forms.Button();
+            this.makeUserbutton = new System.Windows.Forms.Button();
+            this.makeSTAbutton = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.adminModeButton = new System.Windows.Forms.Button();
+            this.userModeButton = new System.Windows.Forms.Button();
+            this.newUserButton = new System.Windows.Forms.Button();
+            this.exitButton = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.MegaBonusLabel = new System.Windows.Forms.Label();
+            this.label99 = new System.Windows.Forms.Label();
+            this.SpendedMegaBonusLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.sumBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bonusBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TAbonusSumSpend)).BeginInit();
@@ -217,7 +232,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(665, 37);
+            this.label11.Location = new System.Drawing.Point(594, 41);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(81, 13);
             this.label11.TabIndex = 17;
@@ -245,14 +260,14 @@
             // f1FriendListComboBox
             // 
             this.f1FriendListComboBox.FormattingEnabled = true;
-            this.f1FriendListComboBox.Location = new System.Drawing.Point(645, 63);
+            this.f1FriendListComboBox.Location = new System.Drawing.Point(574, 67);
             this.f1FriendListComboBox.Name = "f1FriendListComboBox";
             this.f1FriendListComboBox.Size = new System.Drawing.Size(173, 21);
             this.f1FriendListComboBox.TabIndex = 20;
             // 
             // friendSendButton
             // 
-            this.friendSendButton.Location = new System.Drawing.Point(645, 130);
+            this.friendSendButton.Location = new System.Drawing.Point(574, 134);
             this.friendSendButton.Name = "friendSendButton";
             this.friendSendButton.Size = new System.Drawing.Size(75, 23);
             this.friendSendButton.TabIndex = 21;
@@ -262,7 +277,7 @@
             // 
             // friendSendSumBox
             // 
-            this.friendSendSumBox.Location = new System.Drawing.Point(646, 101);
+            this.friendSendSumBox.Location = new System.Drawing.Point(575, 105);
             this.friendSendSumBox.Maximum = new decimal(new int[] {
             100000000,
             0,
@@ -302,18 +317,155 @@
             // friendSendCheckBox
             // 
             this.friendSendCheckBox.AutoSize = true;
-            this.friendSendCheckBox.Location = new System.Drawing.Point(738, 104);
+            this.friendSendCheckBox.Location = new System.Drawing.Point(667, 108);
             this.friendSendCheckBox.Name = "friendSendCheckBox";
             this.friendSendCheckBox.Size = new System.Drawing.Size(80, 17);
             this.friendSendCheckBox.TabIndex = 28;
             this.friendSendCheckBox.Text = "ТА бонусы";
             this.friendSendCheckBox.UseVisualStyleBackColor = true;
             // 
+            // makeTAbutton
+            // 
+            this.makeTAbutton.Location = new System.Drawing.Point(32, 317);
+            this.makeTAbutton.Name = "makeTAbutton";
+            this.makeTAbutton.Size = new System.Drawing.Size(91, 23);
+            this.makeTAbutton.TabIndex = 29;
+            this.makeTAbutton.Text = "ТА";
+            this.makeTAbutton.UseVisualStyleBackColor = true;
+            this.makeTAbutton.Click += new System.EventHandler(this.makeTAbutton_Click);
+            // 
+            // makeUserbutton
+            // 
+            this.makeUserbutton.Location = new System.Drawing.Point(32, 288);
+            this.makeUserbutton.Name = "makeUserbutton";
+            this.makeUserbutton.Size = new System.Drawing.Size(91, 23);
+            this.makeUserbutton.TabIndex = 30;
+            this.makeUserbutton.Text = "Пользователь";
+            this.makeUserbutton.UseVisualStyleBackColor = true;
+            this.makeUserbutton.Click += new System.EventHandler(this.makeUserbutton_Click);
+            // 
+            // makeSTAbutton
+            // 
+            this.makeSTAbutton.Location = new System.Drawing.Point(32, 346);
+            this.makeSTAbutton.Name = "makeSTAbutton";
+            this.makeSTAbutton.Size = new System.Drawing.Size(91, 23);
+            this.makeSTAbutton.TabIndex = 31;
+            this.makeSTAbutton.Text = "СТА";
+            this.makeSTAbutton.UseVisualStyleBackColor = true;
+            this.makeSTAbutton.Click += new System.EventHandler(this.makeSTAbutton_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(29, 272);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(107, 13);
+            this.label3.TabIndex = 32;
+            this.label3.Text = "Изменение статуса";
+            // 
+            // adminModeButton
+            // 
+            this.adminModeButton.Location = new System.Drawing.Point(682, 441);
+            this.adminModeButton.Name = "adminModeButton";
+            this.adminModeButton.Size = new System.Drawing.Size(101, 23);
+            this.adminModeButton.TabIndex = 33;
+            this.adminModeButton.Text = "Администратор";
+            this.adminModeButton.UseVisualStyleBackColor = true;
+            this.adminModeButton.Click += new System.EventHandler(this.adminModeButton_Click);
+            // 
+            // userModeButton
+            // 
+            this.userModeButton.Location = new System.Drawing.Point(682, 470);
+            this.userModeButton.Name = "userModeButton";
+            this.userModeButton.Size = new System.Drawing.Size(101, 23);
+            this.userModeButton.TabIndex = 34;
+            this.userModeButton.Text = "Пользователь";
+            this.userModeButton.UseVisualStyleBackColor = true;
+            this.userModeButton.Click += new System.EventHandler(this.userModeButton_Click);
+            // 
+            // newUserButton
+            // 
+            this.newUserButton.Location = new System.Drawing.Point(802, 441);
+            this.newUserButton.Name = "newUserButton";
+            this.newUserButton.Size = new System.Drawing.Size(101, 23);
+            this.newUserButton.TabIndex = 35;
+            this.newUserButton.Text = "Регистрация";
+            this.newUserButton.UseVisualStyleBackColor = true;
+            this.newUserButton.Click += new System.EventHandler(this.newUserButton_Click);
+            // 
+            // exitButton
+            // 
+            this.exitButton.Location = new System.Drawing.Point(802, 470);
+            this.exitButton.Name = "exitButton";
+            this.exitButton.Size = new System.Drawing.Size(101, 23);
+            this.exitButton.TabIndex = 36;
+            this.exitButton.Text = "Выход";
+            this.exitButton.UseVisualStyleBackColor = true;
+            this.exitButton.Click += new System.EventHandler(this.exitButton_Click);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(710, 425);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(42, 13);
+            this.label9.TabIndex = 37;
+            this.label9.Text = "Режим";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(864, 41);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(48, 13);
+            this.label13.TabIndex = 38;
+            this.label13.Text = "Счет ОК";
+            // 
+            // MegaBonusLabel
+            // 
+            this.MegaBonusLabel.AutoSize = true;
+            this.MegaBonusLabel.Location = new System.Drawing.Point(937, 40);
+            this.MegaBonusLabel.Name = "MegaBonusLabel";
+            this.MegaBonusLabel.Size = new System.Drawing.Size(10, 13);
+            this.MegaBonusLabel.TabIndex = 39;
+            this.MegaBonusLabel.Text = "-";
+            // 
+            // label99
+            // 
+            this.label99.AutoSize = true;
+            this.label99.Location = new System.Drawing.Point(864, 65);
+            this.label99.Name = "label99";
+            this.label99.Size = new System.Drawing.Size(56, 13);
+            this.label99.TabIndex = 40;
+            this.label99.Text = "Вычет ОК";
+            // 
+            // SpendedMegaBonusLabel
+            // 
+            this.SpendedMegaBonusLabel.AutoSize = true;
+            this.SpendedMegaBonusLabel.Location = new System.Drawing.Point(937, 65);
+            this.SpendedMegaBonusLabel.Name = "SpendedMegaBonusLabel";
+            this.SpendedMegaBonusLabel.Size = new System.Drawing.Size(10, 13);
+            this.SpendedMegaBonusLabel.TabIndex = 41;
+            this.SpendedMegaBonusLabel.Text = "-";
+            // 
             // AllForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(929, 517);
+            this.ClientSize = new System.Drawing.Size(1046, 517);
+            this.Controls.Add(this.SpendedMegaBonusLabel);
+            this.Controls.Add(this.label99);
+            this.Controls.Add(this.MegaBonusLabel);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.exitButton);
+            this.Controls.Add(this.newUserButton);
+            this.Controls.Add(this.userModeButton);
+            this.Controls.Add(this.adminModeButton);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.makeSTAbutton);
+            this.Controls.Add(this.makeUserbutton);
+            this.Controls.Add(this.makeTAbutton);
             this.Controls.Add(this.friendSendCheckBox);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.label8);
@@ -380,5 +532,18 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label statusLabel;
         private System.Windows.Forms.CheckBox friendSendCheckBox;
+        private System.Windows.Forms.Button makeTAbutton;
+        private System.Windows.Forms.Button makeUserbutton;
+        private System.Windows.Forms.Button makeSTAbutton;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button adminModeButton;
+        private System.Windows.Forms.Button userModeButton;
+        private System.Windows.Forms.Button newUserButton;
+        private System.Windows.Forms.Button exitButton;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label MegaBonusLabel;
+        private System.Windows.Forms.Label label99;
+        private System.Windows.Forms.Label SpendedMegaBonusLabel;
     }
 }

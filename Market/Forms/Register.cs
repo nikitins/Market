@@ -14,11 +14,23 @@ namespace Market.Forms
     public partial class Register : Form
     {
         Form mainForm;
+        AllForm allForm;
         List<UserDB> users;
 
         public Register(Form mainForm)
         {
             this.mainForm = mainForm;
+            init();
+        }
+
+        public Register(AllForm allForm)
+        {
+            this.allForm = allForm;
+            init();
+        }
+
+        private void init()
+        {
             InitializeComponent();
             users = DataBase.getAllUsers();
             users.Sort((x, y) => x.firstName.Equals(y.firstName) ?
@@ -28,7 +40,6 @@ namespace Market.Forms
             {
                 inviterTextBox.Items.Add(users[i].ToString());
             }
-
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
@@ -85,7 +96,7 @@ namespace Market.Forms
             UserDB user = new UserDB(-1, firstName, lastName, secondName, phone, parantId, 0, 0, 0);
 
             MessageBox.Show($"Пользователь {user.ToString()} успешно зарегистрирован");
-            mainForm.Show();
+            allForm.Show();
             Hide();
         }
     }

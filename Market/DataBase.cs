@@ -71,13 +71,14 @@ namespace Market
 
             if (getUserCountByPhone("89271169536") == 0)
             {
-                createUser("Вася", "Пупкин", "Валерьевич", "89271169536", -1, 0, 0, 2);
+                createUser("Вася", "Пупкин", "Валерьевич", "89271169536", -1, 1000, 1000, 2);
             }
             if (getUserCountByPhone("89374368945") == 0)
             {
-                createUser("Маша", "Старожилова", "Иванова", "89374368945", 1, 0, 0, 0);
+                createUser("Маша", "Старожилова", "Иванова", "89374368945", 1, 1000, 1000, 0);
             }
 
+            runEmpty($"UPDATE {USERS_TABLE_NAME} SET bonus=1000, agentBonus=1000;");
 
             if (runScalar($"SELECT count(*) from {MEGA_BONUS_TABLE_NAME};") == 0)
             {
@@ -144,61 +145,29 @@ namespace Market
         {
             string bonusField = agent ? "agentBonus" : "bonus";
             String text = $"SELECT {bonusField} FROM {USERS_TABLE_NAME} WHERE id={userId};";
-            using (SQLiteConnection conn = getConnection())
-            {
-                conn.Open();
-                SQLiteCommand cmd = createComand(text, conn);
-                try
-                {
-                    using (SQLiteDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                return reader.GetInt32(0);
-                            }
-                        }
-                    }
-                }
-                catch (SQLiteException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-            return -1;
+            return runOneIntField(text);
         }
 
         public static int getMegaBonus()
-        {   String text = $"SELECT sum FROM {MEGA_BONUS_TABLE_NAME} WHERE id=1;";
-            using (SQLiteConnection conn = getConnection())
-            {
-                conn.Open();
-                SQLiteCommand cmd = createComand(text, conn);
-                try
-                {
-                    using (SQLiteDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                return reader.GetInt32(0);
-                            }
-                        }
-                    }
-                }
-                catch (SQLiteException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-            return -1;
+        {
+            String text = $"SELECT sum FROM {MEGA_BONUS_TABLE_NAME} WHERE id=1;";
+            return runOneIntField(text);
+        }
+        
+        public static int getSpendedMegaBonus()
+        {
+            String text = $"SELECT SUM(sum) FROM {BONUS_MOVE_TABLE_NAME} WHERE user_id=-1 AND sum < 0;";
+            return runOneIntField(text) * -1;
         }
 
         public static void changeUserType(String phone, int type)
         {
             runEmpty($"UPDATE {USERS_TABLE_NAME} SET type='{type}' WHERE phone='{phone}';");
+        }
+
+        public static void changeUserType(int id, int type)
+        {
+            runEmpty($"UPDATE {USERS_TABLE_NAME} SET type='{type}' WHERE id='{id}';");
         }
 
         public static Account getAccount(String userName)
@@ -322,7 +291,11 @@ namespace Market
             return sales;
         }
 
-    
+        public static int getAllSalesByUserId(int userId)
+        {
+            String text = $"SELECT SUM(sum) - SUM(payed_bonus) FROM {SALES_TABLE_NAME} WHERE user_id={userId};";
+            return runOneIntField(text);
+        }
 
         public static List<BonusMove> getBonusMoveBySaleId(int saleId)
         {
@@ -378,28 +351,7 @@ namespace Market
                 $"VALUES ({user_id}, {sum}, {bonus}, CURRENT_TIMESTAMP);");
 
             string text = $"SELECT id FROM {SALES_TABLE_NAME} ORDER BY id DESC;";
-            using (SQLiteConnection conn = getConnection())
-            {
-                conn.Open();
-                SQLiteCommand cmd = createComand(text, conn);
-                try
-                {
-                    using (SQLiteDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                return reader.GetInt32(0);
-                            }
-                        }
-                    }
-                } catch (SQLiteException ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-            return -1;
+            return runOneIntField(text);
         }
 
         public static long getUserCountByPhone(string phone)
@@ -435,6 +387,40 @@ namespace Market
                 {
                     long ans = (long) cmd.ExecuteScalar();
                     return ans;
+                }
+                catch (SQLiteException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return -1;
+        }
+
+        private static int runOneIntField(string text)
+        {
+            using (SQLiteConnection conn = getConnection())
+            {
+                conn.Open();
+                SQLiteCommand cmd = createComand(text, conn);
+                try
+                {
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                if (reader.IsDBNull(0))
+                                {
+                                    return 0;
+                                }
+                                else
+                                {
+                                    return reader.GetInt32(0);
+                                }
+                            }
+                        }
+                    }
                 }
                 catch (SQLiteException ex)
                 {

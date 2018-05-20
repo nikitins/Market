@@ -18,11 +18,22 @@ namespace Market.Forms
         private Tree tree;
         private List<UserDB> currentUsers = new List<UserDB>();
         private User selectedUser = null;
-
+        private List<Control> adminElements = new List<Control>();
+        
         public AllForm(Account account)
         {
             this.account = account;
             InitializeComponent();
+
+            adminElements.Add(label10);
+            adminElements.Add(TABonusLabel);
+            adminElements.Add(TAbonusSumSpend);
+            adminElements.Add(spendTAButton);
+            adminElements.Add(label12);
+            adminElements.Add(label3);
+            adminElements.Add(makeSTAbutton);
+            adminElements.Add(makeUserbutton);
+            adminElements.Add(makeTAbutton);
 
             allUsers = DataBase.getAllUsers();
             allUsers.Sort(new Comparison<UserDB>(UserDB.compareByPhone));
@@ -30,6 +41,7 @@ namespace Market.Forms
             tree = new Tree(allUsers);
 
             fillUsersList("");
+            setMegaBonusData();
         }
 
         private void AllForm_Load(object sender, EventArgs e)
@@ -86,7 +98,7 @@ namespace Market.Forms
             {
                 TABonusLabel.Text = selectedUser.agentBonus.ToString();
                 TAbonusSumSpend.Maximum = selectedUser.agentBonus;
-                statusLabel.Text = "Торговый агент";
+                statusLabel.Text = selectedUser.type == 2 ? "Старший торговый агент" : "Торговый агент";
             } else
             {
                 statusLabel.Text = "Пользователь";
@@ -94,6 +106,15 @@ namespace Market.Forms
             }
 
             friendSendSumBox.Maximum = selectedUser.bonus;
+            AllSpendLabel.Text = DataBase.getAllSalesByUserId(id).ToString();
+
+            setMegaBonusData();
+        }
+
+        private void setMegaBonusData()
+        {
+            MegaBonusLabel.Text = DataBase.getMegaBonus().ToString();
+            SpendedMegaBonusLabel.Text = DataBase.getSpendedMegaBonus().ToString();
         }
 
         private void clearSelectedUserData()
@@ -109,6 +130,7 @@ namespace Market.Forms
             TAbonusSumSpend.Maximum = 1000000000;
             friendSendSumBox.Maximum = 1000000000;
             statusLabel.Text = "-";
+            AllSpendLabel.Text = "-";
         }
 
 
@@ -124,6 +146,33 @@ namespace Market.Forms
                     currentUsers.Add(user);
                     usersListBox.Items.Add(userToString(user));
                 }
+            }
+        }
+
+        private void updateUsersInfoFromDB()
+        {
+            allUsers = DataBase.getAllUsers();
+            allUsers.Sort(new Comparison<UserDB>(UserDB.compareByPhone));
+
+            tree = new Tree(allUsers);
+
+            for (int i = 0; i < currentUsers.Count; i++)
+            {
+                foreach (UserDB user in allUsers)
+                {
+                    if (currentUsers[i].id == user.id)
+                    {
+                        currentUsers[i] = user;
+                        break;
+                    }
+                }
+                
+            }
+
+            if (selectedUser != null)
+            {
+                selectedUser = tree.tree[selectedUser.id];
+                fillSelectedUserData(selectedUser.id);
             }
         }
 
@@ -161,7 +210,8 @@ namespace Market.Forms
                 DataBase.changeUserBonus(saleId, userId, -bonus);
             }
 
-            calculateBonuses(saleId, userId, sum);
+            calculateBonuses(saleId, userId, sum - bonus);
+            updateUsersInfoFromDB();
             MessageBox.Show("Покупка зарегистрирована");
         }
 
@@ -255,6 +305,7 @@ namespace Market.Forms
             }
 
             DataBase.changeUserBonus(-2, selectedUser.id, (int) -TAbonusSumSpend.Value, true);
+            updateUsersInfoFromDB();
 
         }
 
@@ -268,10 +319,98 @@ namespace Market.Forms
                 return;
             }
 
-            int friendId = tree.tree[selectedUser.id].children[id].id;
-            
+            User friend = tree.tree[selectedUser.id].children[id];
+
+            if (friendSendCheckBox.Checked)
+            {
+                if(selectedUser.type == 0)
+                {
+                    MessageBox.Show("Пользователь не является агентом");
+                    return;
+                }
+
+                if (friend.type == 0)
+                {
+                    MessageBox.Show("Друг пользователя не является агентом");
+                    return;
+                }
+
+                if (selectedUser.agentBonus < friendSendSumBox.Value)
+                {
+                    MessageBox.Show("У пользоветеля недостаточно ТА бонусов");
+                    return;
+                }
+            }
+            else
+            {
+                if (selectedUser.bonus < friendSendSumBox.Value)
+                {
+                    MessageBox.Show("У пользоветеля недостаточно бонусов");
+                    return;
+                }
+            }
+
+
             DataBase.changeUserBonus(-2, selectedUser.id, (int) -friendSendSumBox.Value, friendSendCheckBox.Checked);
-            DataBase.changeUserBonus(-2, friendId, (int) friendSendSumBox.Value, friendSendCheckBox.Checked);
+            DataBase.changeUserBonus(-2, friend.id, (int) friendSendSumBox.Value, friendSendCheckBox.Checked);
+            updateUsersInfoFromDB();
+            f1FriendListComboBox.SelectedIndex = id;
+        }
+
+        private void changeSelectedUserType(int type)
+        {
+            if (selectedUser == null)
+            {
+                MessageBox.Show("Выберете пользователя");
+            }
+            else
+            {
+                DataBase.changeUserType(selectedUser.id, type);
+                updateUsersInfoFromDB();
+            }
+        }
+
+        private void makeUserbutton_Click(object sender, EventArgs e)
+        {
+            changeSelectedUserType(0);
+        }
+
+        private void makeTAbutton_Click(object sender, EventArgs e)
+        {
+            changeSelectedUserType(1);
+        }
+
+        private void makeSTAbutton_Click(object sender, EventArgs e)
+        {
+            changeSelectedUserType(2);
+        }
+
+        private void exitButton_Click(object sender, EventArgs e)
+        {
+            new Login().Show();
+            Hide();
+        }
+
+        private void newUserButton_Click(object sender, EventArgs e)
+        {
+            new Register(this).Show();
+            Hide();
+        }
+
+        private void userModeButton_Click(object sender, EventArgs e)
+        {
+           foreach(Control c in adminElements)
+           {
+                c.Hide();
+           }
+        }
+
+        private void adminModeButton_Click(object sender, EventArgs e)
+        {
+            foreach (Control c in adminElements)
+            {
+                c.Show();
+            }
         }
     }
 }
