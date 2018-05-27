@@ -18,6 +18,7 @@ namespace Market
         public Login()
         {
             InitializeComponent();
+            Backup.backup();
         }
 
         private void button1_Click(object sender, EventArgs e)

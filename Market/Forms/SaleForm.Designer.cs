@@ -2,7 +2,7 @@
 
 namespace Market.Forms
 {
-    partial class Sale
+    partial class SaleForm
     {
         /// <summary>
         /// Required designer variable.

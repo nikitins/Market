@@ -40,7 +40,7 @@ namespace Market.Models
         public override string ToString()
         {
             string res =  $"{firstName} {secondName} - {phone[0]}-{phone.Substring(1, 3)}-{phone.Substring(4, 3)}-{phone.Substring(7, 2)}-{phone.Substring(9, 2)}";
-           // if (type == 1)
+           // if (bonusType == 1)
           //  {
            //     res += " --- AGENT";
           //  }

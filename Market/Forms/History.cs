@@ -1,72 +1,104 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Market.Models;
 
 namespace Market.Forms
 {
     public partial class History : Form
     {
-        Main mainForm;
-        public History(Main mainForm)
+        AllForm allForm;
+        List<Date> events = new List<Date>();
+
+        public History(AllForm allForm, bool onlySentMoves)
         {
-            this.mainForm = mainForm;
+            this.allForm = allForm;
             InitializeComponent();
-            List<Models.Sale> sales = DataBase.getAllSales();
-            List<Models.BonusMove> moves = DataBase.getAllBonusMoves();
-
-            sales.Sort(new Comparison<Models.Sale>(Models.Sale.compareByDate));
-            moves.Sort(new Comparison<Models.BonusMove>(Models.BonusMove.compareBydate));
-
-            for (int i = 0, j = 0; i < sales.Count || j < moves.Count;)
+            
+            if (onlySentMoves)
             {
-                bool useSale = true;
-                if (i < sales.Count && j < moves.Count)
+                foreach (Models.BonusMove move in DataBase.getAllBonusMoves())
                 {
-                    if (moves[j].date < sales[i].date)
+                    if (move.moveType == 1)
                     {
-                        useSale = false;
-                    } else
-                    {
-                        if (j < moves.Count)
-                        {
-                            useSale = false;
-                        }
+                        events.Add(move);
                     }
                 }
-
-                if (useSale)
+            }
+            else
+            {
+                events.AddRange(DataBase.getAllSales());
+                foreach (Models.BonusMove move in DataBase.getAllBonusMoves())
                 {
-                    Models.Sale sale = sales[i];
-                    dataGridView.Rows.Add(new object[] {sale.date.ToString(), sale.firstName + " " + sale.lastName, "Покупка", sale.sum, sale.bonus, "Обычные" });
-                    i++;
-                } else
-                {
-                    Models.BonusMove move = moves[j];
-                    //dataGridView.Rows.Add(new object[] { move.date.ToString(), sale.firstName + " " + sale.lastName, "Перевод", sale.sum, sale.bonus, "Обычные" });
-                    j++;
+                    if (move.moveType != 3)
+                    {
+                        events.Add(move);
+                    }
                 }
             }
 
-            foreach (Models.Sale sale in sales)
+            events.Sort(Models.Date.compareBydate);
+            setFields();
+        }
+
+        private void setFields()
+        {
+            dataGridView.Rows.Clear();
+            foreach (Date e in events)
             {
-                dataGridView.Rows.Add(new object[] {sale.id, sale.date.ToString(), sale.firstName + " " + sale.lastName, sale.phone, sale.sum, sale.bonus});
+
+                if (e.GetType() == typeof(Sale))
+                {
+                    Sale sale = (Sale)e;
+                    dataGridView.Rows.Add(new object[] { sale.date.ToString(), sale.firstName + " " + sale.secondName, "Покупка", sale.sum, sale.bonus, "Обычные" });
+                }
+                else
+                {
+                    Models.BonusMove move = (Models.BonusMove)e;
+                    string firstName = move.firstName == null ? "Общий" : move.firstName;
+                    string secondName = move.secondName == null ? "Счет" : move.secondName;
+                    string bonusType = move.bonusType == 1 ? "ТА" : "Обычные";
+                    string moveType = move.getMoveTypeAsString();
+                    dataGridView.Rows.Add(new object[] { move.date.ToString(), firstName + " " + secondName, moveType, move.sum, "-", bonusType });
+                }
             }
         }
 
         private void cancel_Click(object sender, System.EventArgs e)
         {
-            mainForm.Show();
+            allForm.Show();
             Hide();
         }
 
 
-      //  private void dataGridView_CellContentClick(object sender, DataGridViewCellMouseEventArgs e)
-       // {
-       //     int rowId = e.RowIndex;
-       //     int saleId = System.Convert.ToInt32(dataGridView.Rows[rowId].Cells[0].Value);
-       //     new BonusMove(this, saleId).Show();
-       //     Hide();
-       // }
+        private void dataGridView_CellContentClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            int rowId = e.RowIndex;
+            Date eventt = events[rowId];
+            if (eventt.GetType() == typeof(Sale))
+            {
+                Sale sale = (Sale)eventt;
+                if (sale.opened)
+                {
+                    for (int i = 0; i < sale.salesCount; i++)
+                    {
+                        events.RemoveAt(rowId + 1);
+                    }
+                    sale.opened = false;
+                }
+                else
+                {
+                    List<Models.BonusMove> moves = DataBase.getBonusMoveBySaleId(sale.id);
+                    foreach (Models.BonusMove move in moves)
+                    {
+                        events.Insert(rowId + 1, move);
+                    }
+                    sale.salesCount = moves.Count;
+                    sale.opened = true;
+                }
+                setFields();
+            }
+        }
 
     }
 }

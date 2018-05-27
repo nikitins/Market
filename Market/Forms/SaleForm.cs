@@ -11,11 +11,11 @@ using System.Windows.Forms;
 
 namespace Market.Forms
 {
-    public partial class Sale : Form
+    public partial class SaleForm : Form
     {
         Main mainForm;
         List<UserDB> users;
-        public Sale(Main mainForm)
+        public SaleForm(Main mainForm)
         {
             this.mainForm = mainForm;
             InitializeComponent();
@@ -46,7 +46,7 @@ namespace Market.Forms
 
             if (bonus > 0)
             {
-                DataBase.changeUserBonus(saleId, userId, -bonus);
+                DataBase.changeUserBonus(saleId, userId, -bonus, 4);
             }
 
             calculateBonuses(saleId, userId, sum);
@@ -64,13 +64,13 @@ namespace Market.Forms
             int sum5 = sum / 20;
             
             // 5% cashback
-            DataBase.changeUserBonus(saleId, userId, sum5);
+            DataBase.changeUserBonus(saleId, userId, sum5, 3);
 
             List<User> parents = tree.getParents(userId);
 
             for (int i = 2; i < Math.Min(4, parents.Count); i++)
             {
-                DataBase.changeUserBonus(saleId, parents[i].id, sum5);
+                DataBase.changeUserBonus(saleId, parents[i].id, sum5, 3);
             }
 
             bool megaPay = false;
@@ -79,7 +79,7 @@ namespace Market.Forms
             {
                 if (parents[1].type != 0)
                 {
-                    DataBase.changeUserBonus(saleId, parents[1].id, sum5, true);
+                    DataBase.changeUserBonus(saleId, parents[1].id, sum5, 3, true);
                     megaPay = true;
                 }
             }
@@ -98,13 +98,13 @@ namespace Market.Forms
             {
                 if (agentId <= 5)
                 {
-                    DataBase.changeUserBonus(saleId, parents[agentId].id, sum5, true);
+                    DataBase.changeUserBonus(saleId, parents[agentId].id, sum5, 3, true);
                     megaPay = true;
                 } else
                 {
                     if (parents[agentId].type == 2)
                     {
-                        DataBase.changeUserBonus(saleId, parents[agentId].id, sum5, true);
+                        DataBase.changeUserBonus(saleId, parents[agentId].id, sum5, 3, true);
                         megaPay = true;
                     }
                 }
@@ -112,7 +112,7 @@ namespace Market.Forms
 
             if (!megaPay)
             {
-                DataBase.changeMegaBonus(saleId, sum5);
+                DataBase.changeMegaBonus(saleId, sum5, 3);
             }
         }
 

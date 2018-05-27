@@ -17,7 +17,7 @@ namespace Market.Forms
         AllForm allForm;
         List<UserDB> users;
 
-        public Register(Form mainForm)
+        public Register(Main mainForm)
         {
             this.mainForm = mainForm;
             init();
@@ -32,7 +32,14 @@ namespace Market.Forms
         private void init()
         {
             InitializeComponent();
-            users = DataBase.getAllUsers();
+            users = new List<UserDB>();
+            foreach (UserDB user in DataBase.getAllUsers())
+            {
+                if (user.id != 1)
+                {
+                    users.Add(user);
+                }
+            }
             users.Sort((x, y) => x.firstName.Equals(y.firstName) ?
                         string.Compare(x.lastName, y.lastName) :
                         string.Compare(x.firstName, y.firstName));
@@ -44,26 +51,20 @@ namespace Market.Forms
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            mainForm.Show();
+            allForm.Show();
             Hide();
         }
 
         private void registerButton_Click(object sender, EventArgs e)
         {
             string firstName = firstNameTextBox.Text;
-            string lastName = lastNameTextBox.Text;
+            string lastName = "";
             string secondName = seconNameTextBox.Text;
             string phone = phoneTextBox.Text;
 
             if (firstName.Length == 0)
             {
                 MessageBox.Show("Имя не может быть пустым");
-                return;
-            }
-
-            if (lastName.Length == 0)
-            {
-                MessageBox.Show("Фамилия не может быть пустой");
                 return;
             }
 
@@ -91,7 +92,7 @@ namespace Market.Forms
                 return;
             }
 
-            int parantId = 1;
+            int parantId = 2;
             if (inviterTextBox.SelectedIndex != -1)
             {
                 parantId = users[inviterTextBox.SelectedIndex].id;

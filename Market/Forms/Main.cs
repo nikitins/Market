@@ -29,8 +29,8 @@ namespace Market
 
         private void history_Click(object sender, EventArgs e)
         {
-            new Forms.History(this).Show();
-            Hide();
+            //new Forms.History(this).Show();
+            //Hide();
         }
 
         private void registration_Click(object sender, EventArgs e)
@@ -64,7 +64,7 @@ namespace Market
 
         private void sale_Click(object sender, EventArgs e)
         {
-            new Forms.Sale(this).Show();
+            new Forms.SaleForm(this).Show();
             Hide();
         }
     }

@@ -61,8 +61,8 @@ namespace Market.Forms
             this.dataGridView.ReadOnly = true;
             this.dataGridView.Size = new System.Drawing.Size(753, 324);
             this.dataGridView.TabIndex = 0;
-         //   this.dataGridView.RowHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_CellContentClick);
-       //     this.dataGridView.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_CellContentClick);
+            this.dataGridView.RowHeaderMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_CellContentClick);
+            this.dataGridView.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_CellContentClick);
             // 
             // Date
             // 
@@ -76,7 +76,7 @@ namespace Market.Forms
             this.name.Name = "name";
             this.name.ReadOnly = true;
             // 
-            // type
+            // bonusType
             // 
             this.type.HeaderText = "Тип";
             this.type.Name = "type";
@@ -121,7 +121,7 @@ namespace Market.Forms
             this.Text = "History";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(Login.appClose);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(cancel_Click);
 
         }
 

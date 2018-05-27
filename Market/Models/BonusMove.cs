@@ -1,35 +1,49 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Market.Models
 {
-    class BonusMove
+    class BonusMove : Date
     {
         public int id;
         public int sum;
-        public int type;
-        public string firstName;
-        public string lastName;
-        public string phone;
-        public DateTime date;
+        public int bonusType;
+        public int moveType;
+        public String firstName;
+        public String secondName;
+        public String phone;
 
-        public BonusMove(int id, int sum, int type, string firstName, string lastName, string phone, DateTime date)
+        public BonusMove(int id, int sum, int bonusType, String firstName, String secondName, String phone, DateTime date, int moveType)
         {
             this.id = id;
             this.sum = sum;
-            this.type = type;
+            this.bonusType = bonusType;
+            this.moveType = moveType;
             this.firstName = firstName;
-            this.lastName = lastName;
+            this.secondName = secondName;
             this.phone = phone;
             this.date = date;
         }
 
-        internal static int compareBydate(BonusMove x, BonusMove y)
+        public string getMoveTypeAsString()
         {
-            return x.date.CompareTo(y.date);
+            if (moveType == 1)
+            {
+                return "Перевод";
+            }
+            if (moveType == 2)
+            {
+                return "Списание";
+            }
+            if (moveType == 3)
+            {
+                return "Начисление";
+            }
+            if (moveType == 4)
+            {
+                return "Оплата бонусами";
+            }
+
+            return "-";
         }
     }
 }

@@ -78,6 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Backup.cs" />
     <Compile Include="DataBase.cs" />
     <Compile Include="Forms\AllForm.cs">
       <SubType>Form</SubType>
@@ -121,11 +122,11 @@
     <Compile Include="Forms\Register.Designer.cs">
       <DependentUpon>Register.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Sale.cs">
+    <Compile Include="Forms\SaleForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Sale.Designer.cs">
-      <DependentUpon>Sale.cs</DependentUpon>
+    <Compile Include="Forms\SaleForm.Designer.cs">
+      <DependentUpon>SaleForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\UserList.cs">
       <SubType>Form</SubType>
@@ -135,6 +136,7 @@
     </Compile>
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\BonusMove.cs" />
+    <Compile Include="Models\Date.cs" />
     <Compile Include="Models\Sale.cs" />
     <Compile Include="Models\SaleDB.cs" />
     <Compile Include="Models\Tree.cs" />
@@ -163,8 +165,8 @@
     <EmbeddedResource Include="Forms\Register.resx">
       <DependentUpon>Register.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Sale.resx">
-      <DependentUpon>Sale.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\SaleForm.resx">
+      <DependentUpon>SaleForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\UserList.resx">
       <DependentUpon>UserList.cs</DependentUpon>

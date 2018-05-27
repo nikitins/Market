@@ -59,7 +59,7 @@
             this.name.Name = "name";
             this.name.ReadOnly = true;
             // 
-            // type
+            // bonusType
             // 
             this.phone.HeaderText = "Телефон";
             this.phone.Name = "phone";

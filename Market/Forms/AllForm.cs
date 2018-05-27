@@ -44,8 +44,8 @@ namespace Market.Forms
             adminElements.Add(SpendedMegaBonusLabel);
             adminElements.Add(spendMegaBonusButton);
             adminElements.Add(spendMegaBonusSum);
-            adminElements.Add(HideButton);
-            adminElements.Add(treeView);
+            //adminElements.Add(HideButton);
+            //adminElements.Add(treeView);
 
             allUsers = DataBase.getAllUsers();
             allUsers.Sort(new Comparison<UserDB>(UserDB.compareByPhone));
@@ -63,6 +63,10 @@ namespace Market.Forms
                 label9.Hide();
                 userModeButton.Hide();
                 adminModeButton.Hide();
+            }
+            if (account.type != 2)
+            {
+                historyButton.Hide();
             }
         }
 
@@ -107,6 +111,7 @@ namespace Market.Forms
             bonusesLabel.Text = selectedUser.bonus.ToString();
             nameLabel.Text = $"{selectedUser.firstName} {selectedUser.secondName}";
 
+            f1FriendListComboBox.Text = "";
             f1FriendListComboBox.Items.Clear();
             foreach (User child in selectedUser.children)
             {
@@ -124,13 +129,14 @@ namespace Market.Forms
             } else
             {
                 statusLabel.Text = "Пользователь";
-                TABonusLabel.Text = "-";
+                TABonusLabel.Text = "0";
             }
 
             friendSendSumBox.Maximum = selectedUser.bonus;
             AllSpendLabel.Text = DataBase.getAllSalesByUserId(id).ToString();
 
             setMegaBonusData();
+            AITextBox.Text = selectedUser.phone;
         }
 
         private void setMegaBonusData()
@@ -144,18 +150,18 @@ namespace Market.Forms
 
         private void clearSelectedUserData()
         {
-            bonusesLabel.Text = "-";
-            AllSpendLabel.Text = "-";
-            nameLabel.Text = "-";
+            bonusesLabel.Text = "0";
+            AllSpendLabel.Text = "0";
+            nameLabel.Text = "";
             selectedUser = null;
             f1FriendListComboBox.Items.Clear();
             f1FriendListComboBox.Text = "";
             bonusBox.Maximum = 1000000000;
-            TABonusLabel.Text = "-";
+            TABonusLabel.Text = "0";
             TAbonusSumSpend.Maximum = 1000000000;
             friendSendSumBox.Maximum = 1000000000;
             statusLabel.Text = "-";
-            AllSpendLabel.Text = "-";
+            AITextBox.Text = "";
         }
 
 
@@ -166,7 +172,7 @@ namespace Market.Forms
 
             foreach (UserDB user in allUsers)
             {
-                if (user.phone.StartsWith(text))
+                if (user.phone.StartsWith(text) && user.id != 1)
                 {
                     currentUsers.Add(user);
                     usersListBox.Items.Add(userToString(user));
@@ -237,7 +243,7 @@ namespace Market.Forms
 
             if (bonus > 0)
             {
-                DataBase.changeUserBonus(saleId, userId, -bonus);
+                DataBase.changeUserBonus(saleId, userId, -bonus, 4);
             }
 
             calculateBonuses(saleId, userId, sum - bonus);
@@ -254,29 +260,44 @@ namespace Market.Forms
             int sum5 = sum / 20;
 
             // 5% cashback
-            DataBase.changeUserBonus(saleId, userId, sum5);
+            DataBase.changeUserBonus(saleId, userId, sum5, 3);
 
             List<User> parents = tree.getParents(userId);
 
+            int payedCount = 2;
             for (int i = 2; i < Math.Min(4, parents.Count); i++)
             {
-                DataBase.changeUserBonus(saleId, parents[i].id, sum5);
+                if (parents[i].id != 1)
+                {
+                    DataBase.changeUserBonus(saleId, parents[i].id, sum5, 3);
+                    payedCount--;
+                    if (parents[i].type != 0)
+                    {
+                        DataBase.changeUserBonus(saleId, parents[i].id, sum5, 3, true);
+                    }
+                }
+            }
+
+            for (int i = 0; i < payedCount; i++)
+            {
+                DataBase.changeMegaBonus(saleId, sum5, 3);
             }
 
             bool megaPay = false;
+
 
             if (parents.Count >= 2)
             {
                 if (parents[1].type != 0)
                 {
-                    DataBase.changeUserBonus(saleId, parents[1].id, sum5, true);
+                    DataBase.changeUserBonus(saleId, parents[1].id, sum5 * 2, 3, true);
                     megaPay = true;
                 }
             }
 
             int agentId = -1;
 
-            for (int i = 1; i < Math.Min(parents.Count, 9); i++)
+            for (int i = 1; i < Math.Min(parents.Count, 11); i++)
             {
                 if (parents[i].type != 0)
                 {
@@ -288,22 +309,36 @@ namespace Market.Forms
             {
                 if (agentId <= 5)
                 {
-                    DataBase.changeUserBonus(saleId, parents[agentId].id, sum5, true);
+                    DataBase.changeUserBonus(saleId, parents[agentId].id, sum5, 3, true);
                     megaPay = true;
                 }
                 else
                 {
-                    if (parents[agentId].type == 2)
+                    if (agentId <= 8)
                     {
-                        DataBase.changeUserBonus(saleId, parents[agentId].id, sum5, true);
-                        megaPay = true;
+                        if (parents[agentId].type == 2)
+                        {
+                            DataBase.changeUserBonus(saleId, parents[agentId].id, sum5, 3, true);
+                            megaPay = true;
+                        }
+                    }
+                    else
+                    {
+                        if (agentId <= 11)
+                        {
+                            if (parents[agentId].type == 3)
+                            {
+                                DataBase.changeUserBonus(saleId, parents[agentId].id, sum5, 3, true);
+                                megaPay = true;
+                            }
+                        }
                     }
                 }
             }
 
             if (!megaPay)
             {
-                DataBase.changeMegaBonus(saleId, sum5);
+                DataBase.changeMegaBonus(saleId, sum5, 3);
             }
         }
 
@@ -334,7 +369,7 @@ namespace Market.Forms
                 return;
             }
 
-            DataBase.changeUserBonus(-2, selectedUser.id, (int) -TAbonusSumSpend.Value, true);
+            DataBase.changeUserBonus(-2, selectedUser.id, (int) -TAbonusSumSpend.Value, 2, true);
             updateUsersInfoFromDB();
 
         }
@@ -381,8 +416,8 @@ namespace Market.Forms
             }
 
 
-            DataBase.changeUserBonus(-2, selectedUser.id, (int) -friendSendSumBox.Value, friendSendCheckBox.Checked);
-            DataBase.changeUserBonus(-2, friend.id, (int) friendSendSumBox.Value, friendSendCheckBox.Checked);
+            DataBase.changeUserBonus(-2, selectedUser.id, (int) -friendSendSumBox.Value, 1, friendSendCheckBox.Checked);
+            DataBase.changeUserBonus(-2, friend.id, (int) friendSendSumBox.Value, 1, friendSendCheckBox.Checked);
             updateUsersInfoFromDB();
             f1FriendListComboBox.SelectedIndex = id;
         }
@@ -395,6 +430,11 @@ namespace Market.Forms
             }
             else
             {
+                if (selectedUser.type == 3)
+                {
+                    MessageBox.Show("Операция невозможна: Запрет Архитектора");
+                    return;
+                }
                 DataBase.changeUserType(selectedUser.id, type);
                 updateUsersInfoFromDB();
             }
@@ -458,7 +498,7 @@ namespace Market.Forms
                 return;
             }
 
-            DataBase.changeMegaBonus(-1, -megaBonus);
+            DataBase.changeMegaBonus(-1, -megaBonus, 2);
 
             MessageBox.Show($"Списано: {megaBonus}");
             setMegaBonusData();
@@ -489,8 +529,8 @@ namespace Market.Forms
                 return;
             }
 
-            DataBase.changeMegaBonus(-2, -sum);
-            DataBase.changeUserBonus(-2, selectedUser.id, sum, megaBonusTACheckBox.Checked);
+            DataBase.changeMegaBonus(-2, -sum, 1);
+            DataBase.changeUserBonus(-2, selectedUser.id, sum, 1, megaBonusTACheckBox.Checked);
 
             updateUsersInfoFromDB();
         }
@@ -508,5 +548,18 @@ namespace Market.Forms
             }
             treeHided = !treeHided;
         }
+
+        private void historyButton_Click(object sender, EventArgs e)
+        {
+            new History(this, false).Show();
+            Hide();
+        }
+
+        private void sentHistoryButton_Click(object sender, EventArgs e)
+        {
+            new History(this, true).Show();
+            Hide();
+        }
+
     }
 }
