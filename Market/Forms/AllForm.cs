@@ -290,8 +290,14 @@ namespace Market.Forms
             {
                 if (parents[1].type != 0)
                 {
-                    DataBase.changeUserBonus(saleId, parents[1].id, sum5 * 2, 3, true);
-                    megaPay = true;
+                    int parentId = parents[1].id;
+                    int type = parents[1].type;
+                    long count = DataBase.getBonusMovementCount(userId, parentId);
+                    if (type == 3 || (type == 2 && count < 200) || (type == 1 && count < 100))
+                    {
+                        DataBase.changeUserBonus(saleId, parents[1].id, sum5 * 2, 3, true);
+                        megaPay = true;
+                    }
                 }
             }
 
@@ -307,32 +313,13 @@ namespace Market.Forms
 
             if (agentId > 3)
             {
-                if (agentId <= 5)
+                int id = parents[agentId].id;
+                int type = parents[agentId].type;
+                long count = DataBase.getBonusMovementCount(userId, id);
+                if ((type == 1 && agentId <= 5 && count < 100) || (type == 2 && agentId <= 8 && count < 200) || (type == 3 && agentId <= 11))
                 {
-                    DataBase.changeUserBonus(saleId, parents[agentId].id, sum5, 3, true);
+                    DataBase.changeUserBonus(saleId, id, sum5, 3, true);
                     megaPay = true;
-                }
-                else
-                {
-                    if (agentId <= 8)
-                    {
-                        if (parents[agentId].type == 2)
-                        {
-                            DataBase.changeUserBonus(saleId, parents[agentId].id, sum5, 3, true);
-                            megaPay = true;
-                        }
-                    }
-                    else
-                    {
-                        if (agentId <= 11)
-                        {
-                            if (parents[agentId].type == 3)
-                            {
-                                DataBase.changeUserBonus(saleId, parents[agentId].id, sum5, 3, true);
-                                megaPay = true;
-                            }
-                        }
-                    }
                 }
             }
 

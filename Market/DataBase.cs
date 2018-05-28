@@ -376,6 +376,12 @@ namespace Market
             return bonusMoves;
         }
 
+        public static long getBonusMovementCount(int user_id, int parent_id)
+        {
+            return runScalar($"SELECT COUNT(*) FROM {SALES_TABLE_NAME} JOIN {BONUS_MOVE_TABLE_NAME} " +
+                $"ON {SALES_TABLE_NAME}.id={BONUS_MOVE_TABLE_NAME}.sale_id WHERE {SALES_TABLE_NAME}.user_id={user_id} AND {BONUS_MOVE_TABLE_NAME}.user_id={parent_id};");
+        }
+
         public static void createUser(string firstName, string lastName, string secondName, string phone, int parentId, int bonus, int agentBonus, int type)
         {
             runEmpty($"INSERT INTO {USERS_TABLE_NAME} (firstName, lastName, secondName, phone, parentId, bonus, agentBonus, type) " +

@@ -671,6 +671,7 @@ namespace Market.Forms
             ((System.ComponentModel.ISupportInitialize)(this.sentMegaSum)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(Login.appClose);
 
         }
 
